@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta property="og:title" content="BizTrack Project by Sumayyah"/>
+    <meta property="og:description" content="A project born out of real small business challenges, now simplifying product, order, and finance management."/>
+    <meta property="og:image:secure_url" content="https://i.imgur.com/0O47fVi.jpg"/>
+    <meta property="og:url" content="https://sumusa.github.io/biztrack/"/>
+    <link rel="stylesheet" href="styles.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
+    <link rel="icon" type="image/x-icon" href="./assets/favicon.ico">
+    <title>Dashboard - BizTrack</title>
+</head>
+<body>
+    <div id="sidebar" class="sidebar">
+        <div class="logo">
+            <a href="./index.html">
+                <i class="fas fa-b"></i>
+                <span>BizTrack</span>
+            </a>
+            <i class="fa-solid fa-xmark" title="Close" onclick="closeSidebar()"></i>
+        </div>
+        <ul class="menu">
+            <li class="active">
+                <a href="./index.html">
+                    <i class="fa-solid fa-gauge-high"></i>
+                    <span>Dashboard</span>
+                </a>
+            </li>
+            <li>
+                <a href="./products.html">
+                    <i class="fas fa-dolly"></i>
+                    <span>Products</span>
+                </a>
+            </li>
+            <li>
+                <a href="./orders.html">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span>Orders</span>
+                </a>
+            </li>
+            <li>
+                <a href="./finances.html">
+                    <i class="fas fa-sack-dollar"></i>
+                    <span>Expenses</span>
+                </a>
+            </li>
+            <li>
+                <a href="./help.html">
+                    <i class="fas fa-question-circle"></i>
+                    <span>Help</span>
+                </a>
+            </li>
+            <li class="logout">
+                <a href="./about.html">
+                    <i class="fa-solid fa-users-line"></i>
+                    <span>Meet the Developer</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+
+    <div class="main-content">
+        <div class="header-wrapper">
+            <div class="menu-icon" onclick="openSidebar()">
+                <i class="fa-solid fa-bars"></i>
+            </div>
+            <div class="header-title">
+                <!-- <span>Primary</span> -->
+                <h2>Dashboard</h2>
+            </div>
+            <div class="user-info">
+                <!-- <div class="search-box">
+                    <i class="fas fa-search"></i>
+                    <input type="search" id="searchInput" placeholder="Search">
+                </div> -->
+                <!-- <i class="fas fa-user-alt fa-xl"></i> -->
+            </div>
+        </div>
+
+        <div class="card-container">
+            <h3 class="main-title">Summary</h3>
+            <div class="card-wrapper">
+                <a href="./orders.html">
+                    <div class="payment-card">
+                        <div class="card-header">
+                            <div class="amount" id="rev-amount">
+                            </div>
+                            <i class="fas fa-sack-dollar icon"></i>
+                        </div>
+                        <span class="card-detail">**** **** **** 5674</span>
+                    </div>
+                </a>
+                <a href="./finances.html">    
+                    <div class="payment-card">
+                        <div class="card-header">
+                            <div class="amount" id="exp-amount"></div>
+                            <i class="fas fa-credit-card icon"></i>
+                        </div>
+                        <span class="card-detail">**** **** **** 2356</span>
+                    </div>
+                </a>
+                <a href="./orders.html"> 
+                    <div class="payment-card">
+                        <div class="card-header">
+                            <div class="amount" id="num-orders"></div>
+                            <i class="fas fa-shopping-cart icon"></i>
+                        </div>
+                        <span class="card-detail">**** **** **** 1047</span>
+                    </div>
+                </a>
+                <a href="#">
+                    <div class="payment-card">
+                        <div class="card-header">
+                            <div class="amount" id="balance"></div>
+                            <i class="fas fa-arrow-up-right-dots icon"></i>
+                        </div>
+                        <span class="card-detail">**** **** **** 2951</span>
+                    </div>
+                </a> 
+            </div>
+        </div>
+        <div class="charts-container">
+            <h3 class="main-title">Analytics</h3>
+            <div class="charts-wrapper">
+                <div class="charts-card">
+                    <span class="chart-title">Sales by Product Category</span>
+                    <div id="bar-chart"></div>
+                </div>
+                <div class="charts-card">
+                    <span class="chart-title">Expenses</span>
+                    <div id="donut-chart"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Apex Charts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/apexcharts/3.45.2/apexcharts.min.js"></script>
+    <script src="./script.js"></script>
+    <script>initializeChart()</script>
+</body>
+</html>

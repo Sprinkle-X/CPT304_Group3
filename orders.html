@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width", initial-scale=1.0">
+    <meta property="og:title" content="BizTrack Project by Sumayyah"/>
+    <meta property="og:description" content="A project born out of real small business challenges, now simplifying product, order, and finance management."/>
+    <meta property="og:image:secure_url" content="https://i.imgur.com/0O47fVi.jpg"/>
+    <meta property="og:url" content="https://sumusa.github.io/biztrack/"/>
+    <link rel="stylesheet" href="./styles.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
+    <link rel="icon" type="image/x-icon" href="./assets/favicon.ico">
+    <title>Orders - BizTrack</title>
+</head>
+<body>
+    <div id="sidebar" class="sidebar">
+        <div class="logo">
+            <a href="./index.html">
+                <i class="fas fa-b"></i>
+                <span>BizTrack</span>
+            </a>
+            <i class="fa-solid fa-xmark" title="Close" onclick="closeSidebar()"></i>
+        </div>
+        <ul class="menu">
+            <li>
+                <a href="./index.html">
+                    <i class="fa-solid fa-gauge-high"></i>
+                    <span>Dashboard</span>
+                </a>
+            </li>
+            <li>
+                <a href="./products.html">
+                    <i class="fas fa-dolly"></i>
+                    <span>Products</span>
+                </a>
+            </li>
+            <li class="active">
+                <a href="./orders.html">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span>Orders</span>
+                </a>
+            </li>
+            <li>
+                <a href="./finances.html">
+                    <i class="fas fa-sack-dollar"></i>
+                    <span>Expenses</span>
+                </a>
+            </li>
+            <li>
+                <a href="./help.html">
+                    <i class="fas fa-question-circle"></i>
+                    <span>Help</span>
+                </a>
+            </li>
+            <li class="logout">
+                <a href="./about.html">
+                    <i class="fa-solid fa-users-line"></i>
+                    <span>Meet the Developer</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+
+    <div class="main-content">
+        <div class="header-wrapper">
+            <div class="menu-icon" onclick="openSidebar()">
+                <i class="fa-solid fa-bars"></i>
+            </div>
+            <div class="header-title">
+                <!-- <span>Primary</span> -->
+                <h2>Orders</h2>
+            </div>
+            <div class="user-info">
+                <div class="search-box">
+                    <i class="fas fa-search"></i>
+                    <input type="search" id="searchInput" placeholder="Search">
+                </div>
+                <!-- <i class="fas fa-user-alt fa-xl"></i> -->
+            </div>
+        </div>
+
+        <div class="table-wrapper">
+            <div class="product-title">
+                <h3 class="main-title">Orders</h3>
+                <div class="order-button">
+                    <button class="add-button" onclick="openForm()">Add Order</button>
+                    <button class="download-button" onclick="exportToCSV()">Export to CSV</button>
+                </div>
+            </div>
+
+            <div class="form-popup">
+                <form class="form-container" id="order-form" onsubmit="addOrUpdate(event)">
+                    <div class="form-columns">
+
+                        <div class="order-first-col">
+                            <label for="order-id"><b>Order ID: </b></label>
+                            <input type="text" id="order-id" placeholder="1001" required>
+
+                            <label for="order-date"><b>Order Date: </b></label>
+                            <input type="date" id="order-date" required>
+
+                            <label for="item-name"><b>Item Name: </b></label>
+                            <select name="item-name" id="item-name" required>
+                                <option value="" disabled selected hidden>Choose an item</option>
+                                <optgroup label="Hats">
+                                    <option value="Baseball caps">Baseball caps</option>
+                                    <option value="Snapbacks">Snapbacks</option>
+                                    <option value="Beanies">Beanies</option>
+                                    <option value="Bucket hats">Bucket hats</option>
+                                </optgroup>
+                                <optgroup label="Drinkware">
+                                    <option value="Mugs">Mugs</option>
+                                    <option value="Water bottles">Water bottles</option>
+                                    <option value="Tumblers">Tumblers</option>
+                                </optgroup>   
+                                <optgroup label="Clothing">
+                                    <option value="T-shirts">T-shirts</option>
+                                    <option value="Sweatshirts">Sweatshirts</option>
+                                    <option value="Hoodies">Hoodies</option>
+                                </optgroup>   
+                                <optgroup label="Accessories">
+                                    <option value="Pillow cases">Pillow cases</option>
+                                    <option value="Tote bags">Tote bags</option>
+                                    <option value="Stickers">Stickers</option>
+                                </optgroup>   
+                                <optgroup label="Home decor">
+                                    <option value="Posters">Posters</option>
+                                    <option value="Framed posters">Framed posters</option>
+                                    <option value="Canvas prints">Canvas prints</option>
+                                </optgroup>
+                            </select>
+                        </div>
+
+                        <div class="order-second-col">
+                            <label for="item-price"><b>Item Price:</b></label>
+                            <input type="number" id="item-price" placeholder="$0.00" min="0.00" max="10000.00" step="0.01" required>
+
+                            <label for="qty-bought"><b>Quantity Bought:</b></label>
+                            <input type="number" id="qty-bought" placeholder="1" required>
+
+                            <label for="shipping"><b>Shipping fee:</b></label>
+                            <input type="number" id="shipping" placeholder="$2.00" min="0.00" max="10000.00" step="0.01" required>
+                        </div>
+
+                        <div class="order-third-col">
+                            <label for="taxes"><b>Taxes (VAT/GST/HST):</b></label>
+                            <input type="number" id="taxes" placeholder="$2.00" min="0.00" max="10000.00" step="0.01" required>
+
+                            <label for="order-status"><b>Order Status:</b></label>
+                            <select name="order-status" id="order-status" required>
+                                <option value="" disabled selected hidden>Choose a status</option>
+                                <option value="Pending" class="pending">Pending</option>
+                                <option value="Processing" class="processing">Processing</option>
+                                <option value="Shipped" class="shipped">Shipped</option>
+                                <option value="Delivered" class="delivered">Delivered</option>
+                            </select>
+
+                            <label for="order-total"><b>Total Order Amount: <small>(Calculated)</small></b></label>
+                            <input type="number" id="order-total" placeholder="$0.00" min="0.00" max="10000.00" step="0.01" disabled>
+                        </div>
+                    </div>
+                    
+                    <div class="button-col">
+                        <button type="submit" class="btn" id="submitBtn">Add</button>
+                        <button type="button" class="btn cancel" onclick="closeForm()">Cancel</button>
+                    </div>
+                </form>
+            </div>
+
+            <div class="table-container">
+                <table id="order-table">
+                    <thead>
+                        <tr>
+                            <th onclick="sortTable('orderID')">Order ID</th>
+                            <th onclick="sortTable('orderDate')">Order Date</th>
+                            <th onclick="sortTable('itemName')">Item Name</th>
+                            <th onclick="sortTable('itemPrice')">Item Price</th>
+                            <th onclick="sortTable('qtyBought')">Qty</th>
+                            <th onclick="sortTable('shipping')">Shipping Fee</th>
+                            <th onclick="sortTable('taxes')">Taxes</th>
+                            <th onclick="sortTable('orderTotal')">Order Total</th>
+                            <th onclick="sortTable('orderStatus')">Order Status</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tableBody">
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td colspan="10">
+                                <div id="total-revenue"></div>
+                            </td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script src="./orders.js"></script>
+</body>
+</html>
