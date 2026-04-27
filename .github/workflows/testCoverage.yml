@@ -38,7 +38,7 @@ jobs:
       # 第四步：运行测试，并生成测试覆盖率报告
       # Jest 会生成 coverage 文件夹，里面包含 lcov.info 覆盖率文件
       - name: Run tests with coverage
-        run: npx jest --coverage
+        run: npm test
 
       # 第五步：把覆盖率报告上传到 Codecov
       # Codecov 会读取 coverage/lcov.info，并在网页、PR 或 badge 中展示覆盖率
