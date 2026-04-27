@@ -1,0 +1,53 @@
+# 这个工作流的名字，会显示在 GitHub 仓库的 Actions 页面里
+name: Test Coverage
+
+# 这里定义什么时候自动运行这个工作流
+on:
+  # 把代码 push 到 main 分支时，自动运行
+  push:
+    branches: [main]
+
+  # 向 main 分支提交 Pull Request 时，自动运行
+  pull_request:
+    branches: [main]
+
+jobs:
+  # 定义一个名为 test 的任务
+  test:
+    # 指定任务运行在 GitHub 提供的 Ubuntu 虚拟环境中
+    runs-on: ubuntu-latest
+
+    steps:
+      # 第一步：把 GitHub 仓库里的代码下载到运行环境中
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # 第二步：安装 Node.js 环境
+      # 因为本项目使用 npm / Jest，所以需要先配置 Node.js
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          # 指定 Node.js 版本，这里使用 20 版本
+          node-version: 20
+
+      # 第三步：安装项目依赖
+      # 会根据 package.json 安装项目需要的依赖包
+      - name: Install dependencies
+        run: npm install
+
+      # 第四步：运行测试，并生成测试覆盖率报告
+      # Jest 会生成 coverage 文件夹，里面包含 lcov.info 覆盖率文件
+      - name: Run tests with coverage
+        run: npx jest --coverage
+
+      # 第五步：把覆盖率报告上传到 Codecov
+      # Codecov 会读取 coverage/lcov.info，并在网页、PR 或 badge 中展示覆盖率
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v5
+        with:
+          # 从 GitHub Secrets 中读取 CODECOV_TOKEN
+          # 注意：真实 token 不会写在代码里，避免泄露
+          token: ${{ secrets.CODECOV_TOKEN }}
+
+          # 指定要上传的覆盖率报告文件路径
+          files: ./coverage/lcov.info
