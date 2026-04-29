@@ -182,8 +182,12 @@ function renderOrders(orders) {
             <div class="status ${statusMap[order.orderStatus]}"><span>${order.orderStatus}</span></div>
         </td>
         <td class="action">
-            <i title="Edit" onclick="editRow('${order.orderID}')" class="edit-icon fa-solid fa-pen-to-square"></i>
-            <i onclick="deleteOrder('${order.orderID}')" class="delete-icon fas fa-trash-alt"></i>
+            <button type="button" class="action-button edit-button" aria-label="Edit order ${order.orderID}" onclick="editRow('${order.orderID}')">
+              <i class="edit-icon fa-solid fa-pen-to-square" aria-hidden="true"></i>
+            </button>
+            <button type="button" class="action-button delete-button" aria-label="Delete order ${order.orderID}" onclick="deleteOrder('${order.orderID}')">
+              <i class="delete-icon fas fa-trash-alt" aria-hidden="true"></i>
+            </button>
           </td> 
       `;
       orderTableBody.appendChild(orderRow);
@@ -272,7 +276,7 @@ function isDuplicateID(orderID, currentID) {
     return orders.some(order => order.orderID === orderID && order.orderID !== currentID);
 }
 
-function sortTable(column) {
+function sortTable(column, button) {
     const tbody = document.getElementById("tableBody");
     const rows = Array.from(tbody.querySelectorAll("tr"));
 
@@ -293,6 +297,18 @@ function sortTable(column) {
     rows.forEach(row => tbody.removeChild(row));
 
     sortedRows.forEach(row => tbody.appendChild(row));
+
+    updateSortState(button);
+}
+
+function updateSortState(activeButton) {
+    document.querySelectorAll("th[aria-sort]").forEach(th => {
+        th.setAttribute("aria-sort", "none");
+    });
+
+    if (activeButton) {
+        activeButton.closest("th").setAttribute("aria-sort", "ascending");
+    }
 }
 
 document.getElementById("searchInput").addEventListener("keyup", function(event) {

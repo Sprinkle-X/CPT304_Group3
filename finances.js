@@ -139,8 +139,12 @@ function renderTransactions(transactions) {
             <td class="tr-amount">${formattedAmount}</td>
             <td>${transaction.trNotes}</td>
             <td class="action">
-                <i title="Edit" onclick="editRow('${transaction.trID}')" class="edit-icon fa-solid fa-pen-to-square"></i>
-                <i onclick="deleteTransaction('${transaction.trID}')" class="delete-icon fas fa-trash-alt"></i>
+                <button type="button" class="action-button edit-button" aria-label="Edit expense ${transaction.trID}" onclick="editRow('${transaction.trID}')">
+                    <i class="edit-icon fa-solid fa-pen-to-square" aria-hidden="true"></i>
+                </button>
+                <button type="button" class="action-button delete-button" aria-label="Delete expense ${transaction.trID}" onclick="deleteTransaction('${transaction.trID}')">
+                    <i class="delete-icon fas fa-trash-alt" aria-hidden="true"></i>
+                </button>
             </td> 
         `;
         transactionTableBody.appendChild(transactionRow);
@@ -208,7 +212,7 @@ function deleteTransaction(trID) {
     }
 }
 
-function sortTable(column) {
+function sortTable(column, button) {
     const tbody = document.getElementById("tableBody");
     const rows = Array.from(tbody.querySelectorAll("tr"));
 
@@ -229,6 +233,18 @@ function sortTable(column) {
     rows.forEach(row => tbody.removeChild(row));
 
     sortedRows.forEach(row => tbody.appendChild(row));
+
+    updateSortState(button);
+}
+
+function updateSortState(activeButton) {
+    document.querySelectorAll("th[aria-sort]").forEach(th => {
+        th.setAttribute("aria-sort", "none");
+    });
+
+    if (activeButton) {
+        activeButton.closest("th").setAttribute("aria-sort", "ascending");
+    }
 }
 
 document.getElementById("searchInput").addEventListener("keyup", function(event) {

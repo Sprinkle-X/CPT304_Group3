@@ -142,8 +142,12 @@ function renderProducts(products) {
           <td>$${product.prodPrice.toFixed(2)}</td>
           <td>${product.prodSold}</td>
           <td class="action">
-            <i title="Edit" onclick="editRow('${product.prodID}')" class="edit-icon fa-solid fa-pen-to-square"></i>
-            <i onclick="deleteProduct('${product.prodID}')" class="delete-icon fas fa-trash-alt"></i>
+            <button type="button" class="action-button edit-button" aria-label="Edit product ${product.prodID}" onclick="editRow('${product.prodID}')">
+              <i class="edit-icon fa-solid fa-pen-to-square" aria-hidden="true"></i>
+            </button>
+            <button type="button" class="action-button delete-button" aria-label="Delete product ${product.prodID}" onclick="deleteProduct('${product.prodID}')">
+              <i class="delete-icon fas fa-trash-alt" aria-hidden="true"></i>
+            </button>
           </td>
       `;
       prodTableBody.appendChild(prodRow);
@@ -210,7 +214,7 @@ function isDuplicateID(prodID, currentID) {
     return products.some(product => product.prodID === prodID && product.prodID !== currentID);
 }
 
-function sortTable(column) {
+function sortTable(column, button) {
     const tbody = document.getElementById("tableBody");
     const rows = Array.from(tbody.querySelectorAll("tr"));
 
@@ -230,6 +234,18 @@ function sortTable(column) {
     rows.forEach(row => tbody.removeChild(row));
 
     sortedRows.forEach(row => tbody.appendChild(row));
+
+    updateSortState(button);
+}
+
+function updateSortState(activeButton) {
+    document.querySelectorAll("th[aria-sort]").forEach(th => {
+        th.setAttribute("aria-sort", "none");
+    });
+
+    if (activeButton) {
+        activeButton.closest("th").setAttribute("aria-sort", "ascending");
+    }
 }
 
 document.getElementById("searchInput").addEventListener("keyup", function(event) {
