@@ -161,6 +161,7 @@ function newProduct(event) {
   localStorage.setItem("bizTrackProducts", JSON.stringify(products));
 
   document.getElementById("product-form").reset();
+  closeForm();
   showFeedback('Added successfully!', 'success');
 }
 
@@ -255,6 +256,7 @@ function updateProduct(prodID) {
 
         document.getElementById("product-form").reset();
         document.getElementById("submitBtn").textContent = "Add";
+        closeForm();
         showFeedback('Updated successfully!', 'success');
     }
 }

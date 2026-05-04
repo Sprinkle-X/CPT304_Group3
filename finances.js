@@ -157,6 +157,7 @@ function newTransaction(event) {
     displayExpenses();
   
     document.getElementById("transaction-form").reset();
+    closeForm();
     showFeedback('Added successfully!', 'success');
 }
 
@@ -256,6 +257,7 @@ function deleteTransaction(trID) {
 
         document.getElementById("transaction-form").reset();
         document.getElementById("submitBtn").textContent = "Add";
+        closeForm();
         showFeedback('Updated successfully!', 'success');
     }
 }

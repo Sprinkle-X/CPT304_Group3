@@ -183,6 +183,7 @@ function newOrder(event) {
 
   document.getElementById("order-form").reset();
   //adding
+  closeForm(); 
   showFeedback('Added successfully!', 'success');
 }
 
@@ -322,6 +323,7 @@ function updateOrder(orderID) {
         document.getElementById("order-form").reset();
         document.getElementById("submitBtn").textContent = "Add";
         //adding
+        closeForm();
         showFeedback('Updated successfully!', 'success');
     }
 }
