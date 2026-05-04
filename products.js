@@ -1,3 +1,49 @@
+// ========== 新增：用户反馈系统 ==========
+function showFeedback(message, type = 'success') {
+    const existingFeedback = document.querySelector('.feedback-message');
+    if (existingFeedback) {
+        existingFeedback.remove();
+    }
+
+    const feedback = document.createElement('div');
+    feedback.className = `feedback-message feedback-${type}`;
+    feedback.textContent = message;
+    feedback.style.cssText = `
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        padding: 15px 25px;
+        border-radius: 8px;
+        color: white;
+        font-weight: bold;
+        font-size: 16px;
+        z-index: 9999;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        animation: slideIn 0.3s ease;
+        background-color: ${type === 'success' ? '#28a745' : '#dc3545'};
+    `;
+    
+    document.body.appendChild(feedback);
+    
+    setTimeout(() => {
+        feedback.style.animation = 'slideOut 0.3s ease';
+        setTimeout(() => feedback.remove(), 300);
+    }, 3000);
+}
+
+const style = document.createElement('style');
+style.textContent = `
+    @keyframes slideIn {
+        from { transform: translateX(400px); opacity: 0; }
+        to { transform: translateX(0); opacity: 1; }
+    }
+    @keyframes slideOut {
+        from { transform: translateX(0); opacity: 1; }
+        to { transform: translateX(400px); opacity: 0; }
+    }
+`;
+document.head.appendChild(style);
+//adding
 
 function openSidebar() {
   var side = document.getElementById('sidebar');
@@ -114,6 +160,7 @@ function newProduct(event) {
   localStorage.setItem("bizTrackProducts", JSON.stringify(products));
 
   document.getElementById("product-form").reset();
+  showFeedback('Added successfully!', 'success');
 }
 
 
@@ -166,6 +213,9 @@ function editRow(prodID) {
 }
 
 function deleteProduct(prodID) {
+  if (!confirm('Are you sure you want to delete?')) {
+    return;
+}
   const indexToDelete = products.findIndex(product => product.prodID === prodID);
 
   if (indexToDelete !== -1) {
@@ -174,6 +224,7 @@ function deleteProduct(prodID) {
       localStorage.setItem("bizTrackProducts", JSON.stringify(products));
 
       renderProducts(products);
+      showFeedback('Deleted successfully!', 'success');
   }
 }
 
@@ -203,6 +254,7 @@ function updateProduct(prodID) {
 
         document.getElementById("product-form").reset();
         document.getElementById("submitBtn").textContent = "Add";
+        showFeedback('Updated successfully!', 'success');
     }
 }
 
