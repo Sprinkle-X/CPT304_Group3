@@ -136,6 +136,7 @@ window.onload = function () {
 }
 
 function addOrUpdate(event) {
+    event.preventDefault();
     let type = document.getElementById("submitBtn").textContent;
     if (type === 'Add') {
         newOrder(event);
