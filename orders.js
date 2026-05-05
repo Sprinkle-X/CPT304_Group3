@@ -1,4 +1,50 @@
+// ========== 新增：用户反馈系统 ==========
+function showFeedback(message, type = 'success') {
+    const existingFeedback = document.querySelector('.feedback-message');
+    if (existingFeedback) {
+        existingFeedback.remove();
+    }
 
+    const feedback = document.createElement('div');
+    feedback.className = `feedback-message feedback-${type}`;
+    feedback.textContent = message;
+    feedback.style.cssText = `
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        padding: 15px 25px;
+        border-radius: 8px;
+        color: white;
+        font-weight: bold;
+        font-size: 16px;
+        z-index: 9999;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        animation: slideIn 0.3s ease;
+        background-color: ${type === 'success' ? '#28a745' : '#dc3545'};
+    `;
+    
+    document.body.appendChild(feedback);
+    
+    setTimeout(() => {
+        feedback.style.animation = 'slideOut 0.3s ease';
+        setTimeout(() => feedback.remove(), 300);
+    }, 3000);
+}
+
+const style = document.createElement('style');
+style.textContent = `
+    @keyframes slideIn {
+        from { transform: translateX(400px); opacity: 0; }
+        to { transform: translateX(0); opacity: 1; }
+    }
+    @keyframes slideOut {
+        from { transform: translateX(0); opacity: 1; }
+        to { transform: translateX(400px); opacity: 0; }
+    }
+`;
+document.head.appendChild(style);
+
+//adding
 function openSidebar() {
     var side = document.getElementById('sidebar');
     side.style.display = (side.style.display === "block") ? "none" : "block";
@@ -90,6 +136,7 @@ window.onload = function () {
 }
 
 function addOrUpdate(event) {
+    event.preventDefault();
     let type = document.getElementById("submitBtn").textContent;
     if (type === 'Add') {
         newOrder(event);
@@ -135,6 +182,9 @@ function newOrder(event) {
   localStorage.setItem("bizTrackOrders", JSON.stringify(orders));
 
   document.getElementById("order-form").reset();
+  //adding
+  closeForm(); 
+  showFeedback('Added successfully!', 'success');
 }
 
 
@@ -246,6 +296,10 @@ function editRow(orderID) {
 }
 
 function deleteOrder(orderID) {
+    //adding
+    if (!confirm('Are you sure you want to delete?')) {
+    return;
+}
   const indexToDelete = orders.findIndex(order => order.orderID === orderID);
 
   if (indexToDelete !== -1) {
@@ -254,6 +308,9 @@ function deleteOrder(orderID) {
       localStorage.setItem("bizTrackOrders", JSON.stringify(orders));
 
       renderOrders(orders);
+      //adding
+      showFeedback('Deleted successfully!', 'success');
+
   }
 }
 
@@ -290,6 +347,9 @@ function updateOrder(orderID) {
 
         document.getElementById("order-form").reset();
         document.getElementById("submitBtn").textContent = "Add";
+        //adding
+        closeForm();
+        showFeedback('Updated successfully!', 'success');
     }
 }
 
