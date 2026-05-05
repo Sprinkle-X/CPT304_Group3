@@ -114,6 +114,9 @@ body {
     font-size: 1.5rem;
     cursor: pointer;
 }
+.menu li.active a {
+    color: #082e3e;
+}
 .logout {
     position: absolute;
     bottom: 0;
@@ -197,7 +200,7 @@ body {
     font-size: 20px;
 }
 .order-button button {
-    background: var(--blue-color);
+    background: #124a62;
     color: var(--white-color);
 }
 .order-button button:hover {
@@ -206,7 +209,7 @@ body {
 .finance-button button {
     font-size: medium;
     font-weight: 600;
-    background: var(--brown-color);
+    background: #a37a74;
     cursor: pointer;
     transition: all 0.5s;
     color: var(--light-orange);
@@ -220,7 +223,7 @@ body {
 .add-button, .download-button {
     font-size: medium;
     font-weight: 600;
-    background: var(--green-color);
+    background: #1a6e53;
     cursor: pointer;
     transition: all 0.5s;
     color: var(--white-color);
@@ -287,7 +290,7 @@ label {
     gap: 18px;
 }
 .form-container .btn {
-    background-color: var(--green-color);
+    background-color: #105e45;
     color: white;
     padding: 16px 20px;
     border: none;
@@ -298,7 +301,7 @@ label {
     font-size: 15px;
 }
 .form-container .cancel {
-    background-color: var(--orange-color);
+    background-color: #6e483a;
 }
 .form-container .btn:hover, .open-button:hover {
     opacity: 1;
@@ -374,7 +377,7 @@ label {
 }
 .card-detail {
     font-size: 17px;
-    color: #63484460;
+    color: #3b2f2f;
     letter-spacing: 2px;
     font-family: 'Courier New', Courier, monospace;
 }
@@ -477,11 +480,11 @@ tfoot td {
     color: #33d8a4;
 }
 .tr-amount {
-    color: #e8754c;
+    color: #812807;
     font-weight: 700;
 }
 .order-total {
-    color: #38b48d;
+    color: #065e44;
     font-weight: 700;
 }
 .status {
@@ -502,8 +505,8 @@ tfoot td {
     background: #24967280;
 }
 .delivered {
-    background: #9AADBF30;
-    color: #63484460;
+    background: #47581330;
+    color: #450c03d4;
 }
 
 .edit-icon{
