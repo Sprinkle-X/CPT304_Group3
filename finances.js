@@ -132,17 +132,41 @@ function renderTransactions(transactions) {
 
         const formattedAmount = typeof transaction.trAmount === 'number' ? `$${transaction.trAmount.toFixed(2)}` : '';
 
-        transactionRow.innerHTML = `
-            <td>${transaction.trID}</td>
-            <td>${transaction.trDate}</td>
-            <td>${transaction.trCategory}</td>
-            <td class="tr-amount">${formattedAmount}</td>
-            <td>${transaction.trNotes}</td>
-            <td class="action">
-                <i title="Edit" onclick="editRow('${transaction.trID}')" class="edit-icon fa-solid fa-pen-to-square"></i>
-                <i onclick="deleteTransaction('${transaction.trID}')" class="delete-icon fas fa-trash-alt"></i>
-            </td> 
-        `;
+        const textFields = [
+          transaction.trID,
+          transaction.trDate,
+          transaction.trCategory
+        ];
+        textFields.forEach(text => {
+          const td = document.createElement("td");
+          td.textContent = text;
+          transactionRow.appendChild(td);
+        });
+
+        const amountTd = document.createElement("td");
+        amountTd.className = "tr-amount";
+        amountTd.textContent = formattedAmount;
+        transactionRow.appendChild(amountTd);
+
+        const notesTd = document.createElement("td");
+        notesTd.textContent = transaction.trNotes;
+        transactionRow.appendChild(notesTd);
+
+        const actionTd = document.createElement("td");
+        actionTd.className = "action";
+
+        const editIcon = document.createElement("i");
+        editIcon.title = "Edit";
+        editIcon.className = "edit-icon fa-solid fa-pen-to-square";
+        editIcon.addEventListener("click", function() { editRow(transaction.trID); });
+        actionTd.appendChild(editIcon);
+
+        const deleteIcon = document.createElement("i");
+        deleteIcon.className = "delete-icon fas fa-trash-alt";
+        deleteIcon.addEventListener("click", function() { deleteTransaction(transaction.trID); });
+        actionTd.appendChild(deleteIcon);
+
+        transactionRow.appendChild(actionTd);
         transactionTableBody.appendChild(transactionRow);
   });
   displayExpenses();
@@ -154,9 +178,7 @@ function displayExpenses() {
     const totalExpenses = transactions
         .reduce((total, transaction) => total + transaction.trAmount,0);
 
-    resultElement.innerHTML = `
-        <span>Total Expenses: $${totalExpenses.toFixed(2)}</span>
-    `;
+    resultElement.textContent = `Total Expenses: $${totalExpenses.toFixed(2)}`;
 }
 
 function editRow(trID) {
