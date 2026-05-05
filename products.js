@@ -134,18 +134,35 @@ function renderProducts(products) {
       prodRow.dataset.prodPrice = product.prodPrice;
       prodRow.dataset.prodSold = product.prodSold;
 
-      prodRow.innerHTML = `
-          <td>${product.prodID}</td>
-          <td>${product.prodName}</td>
-          <td>${product.prodDesc}</td>
-          <td>${product.prodCat}</td>
-          <td>$${product.prodPrice.toFixed(2)}</td>
-          <td>${product.prodSold}</td>
-          <td class="action">
-            <i title="Edit" onclick="editRow('${product.prodID}')" class="edit-icon fa-solid fa-pen-to-square"></i>
-            <i onclick="deleteProduct('${product.prodID}')" class="delete-icon fas fa-trash-alt"></i>
-          </td>
-      `;
+      const textFields = [
+        product.prodID,
+        product.prodName,
+        product.prodDesc,
+        product.prodCat,
+        `$${product.prodPrice.toFixed(2)}`,
+        product.prodSold
+      ];
+      textFields.forEach(text => {
+        const td = document.createElement("td");
+        td.textContent = text;
+        prodRow.appendChild(td);
+      });
+
+      const actionTd = document.createElement("td");
+      actionTd.className = "action";
+
+      const editIcon = document.createElement("i");
+      editIcon.title = "Edit";
+      editIcon.className = "edit-icon fa-solid fa-pen-to-square";
+      editIcon.addEventListener("click", function() { editRow(product.prodID); });
+      actionTd.appendChild(editIcon);
+
+      const deleteIcon = document.createElement("i");
+      deleteIcon.className = "delete-icon fas fa-trash-alt";
+      deleteIcon.addEventListener("click", function() { deleteProduct(product.prodID); });
+      actionTd.appendChild(deleteIcon);
+
+      prodRow.appendChild(actionTd);
       prodTableBody.appendChild(prodRow);
   });
 }

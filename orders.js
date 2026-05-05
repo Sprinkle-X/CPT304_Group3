@@ -169,23 +169,50 @@ function renderOrders(orders) {
       const formattedTaxes = typeof order.taxes === 'number' ? `$${order.taxes.toFixed(2)}` : '';
       const formattedTotal = typeof order.orderTotal === 'number' ? `$${order.orderTotal.toFixed(2)}` : '';
 
-      orderRow.innerHTML = `
-        <td>${order.orderID}</td>
-        <td>${order.orderDate}</td>
-        <td>${order.itemName}</td>
-        <td>${formattedPrice}</td>
-        <td>${order.qtyBought}</td>
-        <td>${formattedShipping}</td>
-        <td>${formattedTaxes}</td>
-        <td class="order-total">${formattedTotal}</td>
-        <td>
-            <div class="status ${statusMap[order.orderStatus]}"><span>${order.orderStatus}</span></div>
-        </td>
-        <td class="action">
-            <i title="Edit" onclick="editRow('${order.orderID}')" class="edit-icon fa-solid fa-pen-to-square"></i>
-            <i onclick="deleteOrder('${order.orderID}')" class="delete-icon fas fa-trash-alt"></i>
-          </td> 
-      `;
+      const textFields = [
+        order.orderID,
+        order.orderDate,
+        order.itemName,
+        formattedPrice,
+        order.qtyBought,
+        formattedShipping,
+        formattedTaxes
+      ];
+      textFields.forEach(text => {
+        const td = document.createElement("td");
+        td.textContent = text;
+        orderRow.appendChild(td);
+      });
+
+      const totalTd = document.createElement("td");
+      totalTd.className = "order-total";
+      totalTd.textContent = formattedTotal;
+      orderRow.appendChild(totalTd);
+
+      const statusTd = document.createElement("td");
+      const statusDiv = document.createElement("div");
+      statusDiv.className = "status " + statusMap[order.orderStatus];
+      const statusSpan = document.createElement("span");
+      statusSpan.textContent = order.orderStatus;
+      statusDiv.appendChild(statusSpan);
+      statusTd.appendChild(statusDiv);
+      orderRow.appendChild(statusTd);
+
+      const actionTd = document.createElement("td");
+      actionTd.className = "action";
+
+      const editIcon = document.createElement("i");
+      editIcon.title = "Edit";
+      editIcon.className = "edit-icon fa-solid fa-pen-to-square";
+      editIcon.addEventListener("click", function() { editRow(order.orderID); });
+      actionTd.appendChild(editIcon);
+
+      const deleteIcon = document.createElement("i");
+      deleteIcon.className = "delete-icon fas fa-trash-alt";
+      deleteIcon.addEventListener("click", function() { deleteOrder(order.orderID); });
+      actionTd.appendChild(deleteIcon);
+
+      orderRow.appendChild(actionTd);
       orderTableBody.appendChild(orderRow);
   });
   displayRevenue();
@@ -197,9 +224,7 @@ function displayRevenue() {
     const totalRevenue = orders
         .reduce((total, order) => total + order.orderTotal, 0);
 
-    resultElement.innerHTML = `
-        <span>Total Revenue: $${totalRevenue.toFixed(2)}</span>
-    `;
+    resultElement.textContent = `Total Revenue: $${totalRevenue.toFixed(2)}`;
 }
 
 function editRow(orderID) {
