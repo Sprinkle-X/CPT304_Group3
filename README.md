@@ -6,7 +6,7 @@ BizTrack is a web app born from my experience running a small business. It’s a
 
 ## 📝 DEMO
 
-Please refer to --- https://sumusa.github.io/biztrack/.
+Please refer to --- [https://cpt304-group3.onrender.com](https://cpt304-group3.onrender.com).
 
 ## 📷 Screenshots
 
