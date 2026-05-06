@@ -116,25 +116,21 @@ window.onload = function () {
   const balDiv = document.getElementById('balance');
   const ordDiv = document.getElementById('num-orders');
 
-  revDiv.innerHTML = `
-      <span class="title">Revenue</span>
-      <span class="amount-value">$${totalRevenues.toFixed(2)}</span> 
-  `;
+  revDiv.replaceChildren(
+    createAmountSpan("Revenue", `$${totalRevenues.toFixed(2)}`)
+  );
 
-  expDiv.innerHTML = `
-    <span class="title">Expenses</span>
-    <span class="amount-value">$${totalExpenses.toFixed(2)}</span>
-  `;
+  expDiv.replaceChildren(
+    createAmountSpan("Expenses", `$${totalExpenses.toFixed(2)}`)
+  );
 
-  balDiv.innerHTML = `
-    <span class="title">Balance</span>
-    <span class="amount-value">$${totalBalance.toFixed(2)}</span>
-  `;
+  balDiv.replaceChildren(
+    createAmountSpan("Balance", `$${totalBalance.toFixed(2)}`)
+  );
 
-  ordDiv.innerHTML = `
-    <span class="title">Orders</span>
-    <span class="amount-value">${numOrders}</span>
-  `;
+  ordDiv.replaceChildren(
+    createAmountSpan("Orders", numOrders)
+  );
 };
 
 function calculateExpTotal(transactions) {
@@ -142,6 +138,19 @@ function calculateExpTotal(transactions) {
 }
 function calculateRevTotal(orders) {
   return orders.reduce((total, order) => total + order.orderTotal, 0);
+}
+
+function createAmountSpan(title, amount) {
+  const titleSpan = document.createElement("span");
+  titleSpan.className = "title";
+  titleSpan.textContent = title;
+  const valueSpan = document.createElement("span");
+  valueSpan.className = "amount-value";
+  valueSpan.textContent = amount;
+  const frag = document.createDocumentFragment();
+  frag.appendChild(titleSpan);
+  frag.appendChild(valueSpan);
+  return frag;
 }
 
 

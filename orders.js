@@ -1,4 +1,50 @@
+// ========== 新增：用户反馈系统 ==========
+function showFeedback(message, type = 'success') {
+    const existingFeedback = document.querySelector('.feedback-message');
+    if (existingFeedback) {
+        existingFeedback.remove();
+    }
 
+    const feedback = document.createElement('div');
+    feedback.className = `feedback-message feedback-${type}`;
+    feedback.textContent = message;
+    feedback.style.cssText = `
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        padding: 15px 25px;
+        border-radius: 8px;
+        color: white;
+        font-weight: bold;
+        font-size: 16px;
+        z-index: 9999;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        animation: slideIn 0.3s ease;
+        background-color: ${type === 'success' ? '#28a745' : '#dc3545'};
+    `;
+
+    document.body.appendChild(feedback);
+
+    setTimeout(() => {
+        feedback.style.animation = 'slideOut 0.3s ease';
+        setTimeout(() => feedback.remove(), 300);
+    }, 3000);
+}
+
+const style = document.createElement('style');
+style.textContent = `
+    @keyframes slideIn {
+        from { transform: translateX(400px); opacity: 0; }
+        to { transform: translateX(0); opacity: 1; }
+    }
+    @keyframes slideOut {
+        from { transform: translateX(0); opacity: 1; }
+        to { transform: translateX(400px); opacity: 0; }
+    }
+`;
+document.head.appendChild(style);
+
+//adding
 function openSidebar() {
     var side = document.getElementById('sidebar');
     side.style.display = (side.style.display === "block") ? "none" : "block";
@@ -90,6 +136,7 @@ window.onload = function () {
 }
 
 function addOrUpdate(event) {
+    event.preventDefault();
     let type = document.getElementById("submitBtn").textContent;
     if (type === 'Add') {
         newOrder(event);
@@ -135,6 +182,9 @@ function newOrder(event) {
   localStorage.setItem("bizTrackOrders", JSON.stringify(orders));
 
   document.getElementById("order-form").reset();
+  //adding
+  closeForm();
+  showFeedback('Added successfully!', 'success');
 }
 
 
@@ -169,27 +219,63 @@ function renderOrders(orders) {
       const formattedTaxes = typeof order.taxes === 'number' ? `$${order.taxes.toFixed(2)}` : '';
       const formattedTotal = typeof order.orderTotal === 'number' ? `$${order.orderTotal.toFixed(2)}` : '';
 
-      orderRow.innerHTML = `
-        <td>${order.orderID}</td>
-        <td>${order.orderDate}</td>
-        <td>${order.itemName}</td>
-        <td>${formattedPrice}</td>
-        <td>${order.qtyBought}</td>
-        <td>${formattedShipping}</td>
-        <td>${formattedTaxes}</td>
-        <td class="order-total">${formattedTotal}</td>
-        <td>
-            <div class="status ${statusMap[order.orderStatus]}"><span>${order.orderStatus}</span></div>
-        </td>
-        <td class="action">
-            <button type="button" class="action-button edit-button" aria-label="Edit order ${order.orderID}" onclick="editRow('${order.orderID}')">
-              <i class="edit-icon fa-solid fa-pen-to-square" aria-hidden="true"></i>
-            </button>
-            <button type="button" class="action-button delete-button" aria-label="Delete order ${order.orderID}" onclick="deleteOrder('${order.orderID}')">
-              <i class="delete-icon fas fa-trash-alt" aria-hidden="true"></i>
-            </button>
-          </td> 
-      `;
+      const textFields = [
+        order.orderID,
+        order.orderDate,
+        order.itemName,
+        formattedPrice,
+        order.qtyBought,
+        formattedShipping,
+        formattedTaxes
+      ];
+      textFields.forEach(text => {
+        const td = document.createElement("td");
+        td.textContent = text;
+        orderRow.appendChild(td);
+      });
+
+      const totalTd = document.createElement("td");
+      totalTd.className = "order-total";
+      totalTd.textContent = formattedTotal;
+      orderRow.appendChild(totalTd);
+
+      const statusTd = document.createElement("td");
+      const statusDiv = document.createElement("div");
+      statusDiv.className = "status " + statusMap[order.orderStatus];
+      const statusSpan = document.createElement("span");
+      statusSpan.textContent = order.orderStatus;
+      statusDiv.appendChild(statusSpan);
+      statusTd.appendChild(statusDiv);
+      orderRow.appendChild(statusTd);
+
+      const actionTd = document.createElement("td");
+      actionTd.className = "action";
+
+      const editButton = document.createElement("button");
+      editButton.type = "button";
+      editButton.className = "action-button edit-button";
+      editButton.setAttribute("aria-label", `Edit order ${order.orderID}`);
+      editButton.addEventListener("click", function() { editRow(order.orderID); });
+
+      const editIcon = document.createElement("i");
+      editIcon.className = "edit-icon fa-solid fa-pen-to-square";
+      editIcon.setAttribute("aria-hidden", "true");
+      editButton.appendChild(editIcon);
+      actionTd.appendChild(editButton);
+
+      const deleteButton = document.createElement("button");
+      deleteButton.type = "button";
+      deleteButton.className = "action-button delete-button";
+      deleteButton.setAttribute("aria-label", `Delete order ${order.orderID}`);
+      deleteButton.addEventListener("click", function() { deleteOrder(order.orderID); });
+
+      const deleteIcon = document.createElement("i");
+      deleteIcon.className = "delete-icon fas fa-trash-alt";
+      deleteIcon.setAttribute("aria-hidden", "true");
+      deleteButton.appendChild(deleteIcon);
+      actionTd.appendChild(deleteButton);
+
+      orderRow.appendChild(actionTd);
       orderTableBody.appendChild(orderRow);
   });
   displayRevenue();
@@ -201,9 +287,7 @@ function displayRevenue() {
     const totalRevenue = orders
         .reduce((total, order) => total + order.orderTotal, 0);
 
-    resultElement.innerHTML = `
-        <span>Total Revenue: $${totalRevenue.toFixed(2)}</span>
-    `;
+    resultElement.textContent = `Total Revenue: $${totalRevenue.toFixed(2)}`;
 }
 
 function editRow(orderID) {
@@ -225,6 +309,10 @@ function editRow(orderID) {
 }
 
 function deleteOrder(orderID) {
+    //adding
+    if (!confirm('Are you sure you want to delete?')) {
+    return;
+}
   const indexToDelete = orders.findIndex(order => order.orderID === orderID);
 
   if (indexToDelete !== -1) {
@@ -233,6 +321,9 @@ function deleteOrder(orderID) {
       localStorage.setItem("bizTrackOrders", JSON.stringify(orders));
 
       renderOrders(orders);
+      //adding
+      showFeedback('Deleted successfully!', 'success');
+
   }
 }
 
@@ -269,6 +360,9 @@ function updateOrder(orderID) {
 
         document.getElementById("order-form").reset();
         document.getElementById("submitBtn").textContent = "Add";
+        //adding
+        closeForm();
+        showFeedback('Updated successfully!', 'success');
     }
 }
 
@@ -343,21 +437,21 @@ function exportToCSV() {
             orderStatus: order.orderStatus,
         };
     });
-  
+
     const csvContent = generateCSV(ordersToExport);
-  
+
     const blob = new Blob([csvContent], { type: 'text/csv' });
-  
+
     const link = document.createElement('a');
     link.href = window.URL.createObjectURL(blob);
     link.download = 'biztrack_order_table.csv';
-  
+
     document.body.appendChild(link);
     link.click();
-  
+
     document.body.removeChild(link);
 }
-  
+
 function generateCSV(data) {
     const headers = Object.keys(data[0]).join(',');
     const rows = data.map(order => Object.values(order).join(','));

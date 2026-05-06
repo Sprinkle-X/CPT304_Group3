@@ -1,4 +1,49 @@
+// ========== 新增：用户反馈系统 ==========
+function showFeedback(message, type = 'success') {
+    const existingFeedback = document.querySelector('.feedback-message');
+    if (existingFeedback) {
+        existingFeedback.remove();
+    }
 
+    const feedback = document.createElement('div');
+    feedback.className = `feedback-message feedback-${type}`;
+    feedback.textContent = message;
+    feedback.style.cssText = `
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        padding: 15px 25px;
+        border-radius: 8px;
+        color: white;
+        font-weight: bold;
+        font-size: 16px;
+        z-index: 9999;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        animation: slideIn 0.3s ease;
+        background-color: ${type === 'success' ? '#28a745' : '#dc3545'};
+    `;
+
+    document.body.appendChild(feedback);
+
+    setTimeout(() => {
+        feedback.style.animation = 'slideOut 0.3s ease';
+        setTimeout(() => feedback.remove(), 300);
+    }, 3000);
+}
+
+const style = document.createElement('style');
+style.textContent = `
+    @keyframes slideIn {
+        from { transform: translateX(400px); opacity: 0; }
+        to { transform: translateX(0); opacity: 1; }
+    }
+    @keyframes slideOut {
+        from { transform: translateX(0); opacity: 1; }
+        to { transform: translateX(400px); opacity: 0; }
+    }
+`;
+document.head.appendChild(style);
+//adding
 function openSidebar() {
     var side = document.getElementById('sidebar');
     side.style.display = (side.style.display === "block") ? "none" : "block";
@@ -66,14 +111,15 @@ window.onload = function () {
         ];
 
         serialNumberCounter = transactions.length + 1
-  
+
         localStorage.setItem("bizTrackTransactions", JSON.stringify(transactions));
     }
-  
+
     renderTransactions(transactions);
 }
 
 function addOrUpdate(event) {
+    event.preventDefault();
     let type = document.getElementById("submitBtn").textContent;
     if (type === 'Add') {
         newTransaction(event);
@@ -93,7 +139,7 @@ function newTransaction(event) {
 
     serialNumberCounter = transactions.length + 1;
     let trID = serialNumberCounter;
-    
+
     const transaction = {
       trID,
       trDate,
@@ -101,16 +147,18 @@ function newTransaction(event) {
       trAmount,
       trNotes,
     };
-    
+
     transactions.push(transaction);
-  
+
     renderTransactions(transactions);
     localStorage.setItem("bizTrackTransactions", JSON.stringify(transactions));
 
     serialNumberCounter++;
     displayExpenses();
-  
+
     document.getElementById("transaction-form").reset();
+    closeForm();
+    showFeedback('Added successfully!', 'success');
 }
 
 
@@ -132,21 +180,54 @@ function renderTransactions(transactions) {
 
         const formattedAmount = typeof transaction.trAmount === 'number' ? `$${transaction.trAmount.toFixed(2)}` : '';
 
-        transactionRow.innerHTML = `
-            <td>${transaction.trID}</td>
-            <td>${transaction.trDate}</td>
-            <td>${transaction.trCategory}</td>
-            <td class="tr-amount">${formattedAmount}</td>
-            <td>${transaction.trNotes}</td>
-            <td class="action">
-                <button type="button" class="action-button edit-button" aria-label="Edit expense ${transaction.trID}" onclick="editRow('${transaction.trID}')">
-                    <i class="edit-icon fa-solid fa-pen-to-square" aria-hidden="true"></i>
-                </button>
-                <button type="button" class="action-button delete-button" aria-label="Delete expense ${transaction.trID}" onclick="deleteTransaction('${transaction.trID}')">
-                    <i class="delete-icon fas fa-trash-alt" aria-hidden="true"></i>
-                </button>
-            </td> 
-        `;
+        const textFields = [
+          transaction.trID,
+          transaction.trDate,
+          transaction.trCategory
+        ];
+        textFields.forEach(text => {
+          const td = document.createElement("td");
+          td.textContent = text;
+          transactionRow.appendChild(td);
+        });
+
+        const amountTd = document.createElement("td");
+        amountTd.className = "tr-amount";
+        amountTd.textContent = formattedAmount;
+        transactionRow.appendChild(amountTd);
+
+        const notesTd = document.createElement("td");
+        notesTd.textContent = transaction.trNotes;
+        transactionRow.appendChild(notesTd);
+
+        const actionTd = document.createElement("td");
+        actionTd.className = "action";
+
+        const editButton = document.createElement("button");
+        editButton.type = "button";
+        editButton.className = "action-button edit-button";
+        editButton.setAttribute("aria-label", `Edit expense ${transaction.trID}`);
+        editButton.addEventListener("click", function() { editRow(transaction.trID); });
+
+        const editIcon = document.createElement("i");
+        editIcon.className = "edit-icon fa-solid fa-pen-to-square";
+        editIcon.setAttribute("aria-hidden", "true");
+        editButton.appendChild(editIcon);
+        actionTd.appendChild(editButton);
+
+        const deleteButton = document.createElement("button");
+        deleteButton.type = "button";
+        deleteButton.className = "action-button delete-button";
+        deleteButton.setAttribute("aria-label", `Delete expense ${transaction.trID}`);
+        deleteButton.addEventListener("click", function() { deleteTransaction(transaction.trID); });
+
+        const deleteIcon = document.createElement("i");
+        deleteIcon.className = "delete-icon fas fa-trash-alt";
+        deleteIcon.setAttribute("aria-hidden", "true");
+        deleteButton.appendChild(deleteIcon);
+        actionTd.appendChild(deleteButton);
+
+        transactionRow.appendChild(actionTd);
         transactionTableBody.appendChild(transactionRow);
   });
   displayExpenses();
@@ -158,26 +239,27 @@ function displayExpenses() {
     const totalExpenses = transactions
         .reduce((total, transaction) => total + transaction.trAmount,0);
 
-    resultElement.innerHTML = `
-        <span>Total Expenses: $${totalExpenses.toFixed(2)}</span>
-    `;
+    resultElement.textContent = `Total Expenses: $${totalExpenses.toFixed(2)}`;
 }
 
 function editRow(trID) {
     const trToEdit = transactions.find(transaction => transaction.trID == trID);
-    
-    document.getElementById("tr-id").value = trToEdit.trID;      
+
+    document.getElementById("tr-id").value = trToEdit.trID;
     document.getElementById("tr-date").value = trToEdit.trDate;
     document.getElementById("tr-category").value = trToEdit.trCategory;
     document.getElementById("tr-amount").value = trToEdit.trAmount;
     document.getElementById("tr-notes").value = trToEdit.trNotes;
-  
+
     document.getElementById("submitBtn").textContent = "Update";
 
     document.getElementById("transaction-form").style.display = "block";
   }
-  
+
 function deleteTransaction(trID) {
+    if (!confirm('Are you sure you want to delete?')) {
+    return;
+}
     const indexToDelete = transactions.findIndex(transaction => transaction.trID == trID);
 
     if (indexToDelete !== -1) {
@@ -186,6 +268,7 @@ function deleteTransaction(trID) {
         localStorage.setItem("bizTrackTransactions", JSON.stringify(transactions));
 
         renderTransactions(transactions);
+        showFeedback('Deleted successfully!', 'success');
     }
 }
 
@@ -209,6 +292,8 @@ function deleteTransaction(trID) {
 
         document.getElementById("transaction-form").reset();
         document.getElementById("submitBtn").textContent = "Add";
+        closeForm();
+        showFeedback('Updated successfully!', 'success');
     }
 }
 
@@ -275,21 +360,21 @@ function exportToCSV() {
             trNotes: transaction.trNotes,
         };
     });
-  
+
     const csvContent = generateCSV(transactionsToExport);
-  
+
     const blob = new Blob([csvContent], { type: 'text/csv' });
-  
+
     const link = document.createElement('a');
     link.href = window.URL.createObjectURL(blob);
     link.download = 'biztrack_expense_table.csv';
-  
+
     document.body.appendChild(link);
     link.click();
-  
+
     document.body.removeChild(link);
 }
-  
+
 function generateCSV(data) {
     const headers = Object.keys(data[0]).join(',');
     const rows = data.map(order => Object.values(order).join(','));

@@ -1,3 +1,49 @@
+// ========== 新增：用户反馈系统 ==========
+function showFeedback(message, type = 'success') {
+    const existingFeedback = document.querySelector('.feedback-message');
+    if (existingFeedback) {
+        existingFeedback.remove();
+    }
+
+    const feedback = document.createElement('div');
+    feedback.className = `feedback-message feedback-${type}`;
+    feedback.textContent = message;
+    feedback.style.cssText = `
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        padding: 15px 25px;
+        border-radius: 8px;
+        color: white;
+        font-weight: bold;
+        font-size: 16px;
+        z-index: 9999;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        animation: slideIn 0.3s ease;
+        background-color: ${type === 'success' ? '#28a745' : '#dc3545'};
+    `;
+
+    document.body.appendChild(feedback);
+
+    setTimeout(() => {
+        feedback.style.animation = 'slideOut 0.3s ease';
+        setTimeout(() => feedback.remove(), 300);
+    }, 3000);
+}
+
+const style = document.createElement('style');
+style.textContent = `
+    @keyframes slideIn {
+        from { transform: translateX(400px); opacity: 0; }
+        to { transform: translateX(0); opacity: 1; }
+    }
+    @keyframes slideOut {
+        from { transform: translateX(0); opacity: 1; }
+        to { transform: translateX(400px); opacity: 0; }
+    }
+`;
+document.head.appendChild(style);
+//adding
 
 function openSidebar() {
   var side = document.getElementById('sidebar');
@@ -76,6 +122,7 @@ function init() {
 }
 
 function addOrUpdate(event) {
+  event.preventDefault();
   let type = document.getElementById("submitBtn").textContent;
   if (type === 'Add') {
       newProduct(event);
@@ -114,6 +161,8 @@ function newProduct(event) {
   localStorage.setItem("bizTrackProducts", JSON.stringify(products));
 
   document.getElementById("product-form").reset();
+  closeForm();
+  showFeedback('Added successfully!', 'success');
 }
 
 
@@ -134,22 +183,48 @@ function renderProducts(products) {
       prodRow.dataset.prodPrice = product.prodPrice;
       prodRow.dataset.prodSold = product.prodSold;
 
-      prodRow.innerHTML = `
-          <td>${product.prodID}</td>
-          <td>${product.prodName}</td>
-          <td>${product.prodDesc}</td>
-          <td>${product.prodCat}</td>
-          <td>$${product.prodPrice.toFixed(2)}</td>
-          <td>${product.prodSold}</td>
-          <td class="action">
-            <button type="button" class="action-button edit-button" aria-label="Edit product ${product.prodID}" onclick="editRow('${product.prodID}')">
-              <i class="edit-icon fa-solid fa-pen-to-square" aria-hidden="true"></i>
-            </button>
-            <button type="button" class="action-button delete-button" aria-label="Delete product ${product.prodID}" onclick="deleteProduct('${product.prodID}')">
-              <i class="delete-icon fas fa-trash-alt" aria-hidden="true"></i>
-            </button>
-          </td>
-      `;
+      const textFields = [
+        product.prodID,
+        product.prodName,
+        product.prodDesc,
+        product.prodCat,
+        `$${product.prodPrice.toFixed(2)}`,
+        product.prodSold
+      ];
+      textFields.forEach(text => {
+        const td = document.createElement("td");
+        td.textContent = text;
+        prodRow.appendChild(td);
+      });
+
+      const actionTd = document.createElement("td");
+      actionTd.className = "action";
+
+      const editButton = document.createElement("button");
+      editButton.type = "button";
+      editButton.className = "action-button edit-button";
+      editButton.setAttribute("aria-label", `Edit product ${product.prodID}`);
+      editButton.addEventListener("click", function() { editRow(product.prodID); });
+
+      const editIcon = document.createElement("i");
+      editIcon.className = "edit-icon fa-solid fa-pen-to-square";
+      editIcon.setAttribute("aria-hidden", "true");
+      editButton.appendChild(editIcon);
+      actionTd.appendChild(editButton);
+
+      const deleteButton = document.createElement("button");
+      deleteButton.type = "button";
+      deleteButton.className = "action-button delete-button";
+      deleteButton.setAttribute("aria-label", `Delete product ${product.prodID}`);
+      deleteButton.addEventListener("click", function() { deleteProduct(product.prodID); });
+
+      const deleteIcon = document.createElement("i");
+      deleteIcon.className = "delete-icon fas fa-trash-alt";
+      deleteIcon.setAttribute("aria-hidden", "true");
+      deleteButton.appendChild(deleteIcon);
+      actionTd.appendChild(deleteButton);
+
+      prodRow.appendChild(actionTd);
       prodTableBody.appendChild(prodRow);
   });
 }
@@ -170,6 +245,9 @@ function editRow(prodID) {
 }
 
 function deleteProduct(prodID) {
+  if (!confirm('Are you sure you want to delete?')) {
+    return;
+}
   const indexToDelete = products.findIndex(product => product.prodID === prodID);
 
   if (indexToDelete !== -1) {
@@ -178,6 +256,7 @@ function deleteProduct(prodID) {
       localStorage.setItem("bizTrackProducts", JSON.stringify(products));
 
       renderProducts(products);
+      showFeedback('Deleted successfully!', 'success');
   }
 }
 
@@ -207,6 +286,8 @@ function updateProduct(prodID) {
 
         document.getElementById("product-form").reset();
         document.getElementById("submitBtn").textContent = "Add";
+        closeForm();
+        showFeedback('Updated successfully!', 'success');
     }
 }
 
