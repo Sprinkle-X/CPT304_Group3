@@ -737,3 +737,87 @@ ol {
   padding: 4px 8px;
   font-size: 14px;
 }
+
+
+
+.cookie-banner {
+  position: fixed;
+  left: 50%;
+  bottom: 24px;
+  transform: translateX(-50%);
+  width: min(720px, calc(100% - 32px));
+  background-color: #ffffff;
+  border: 1px solid #d0d7de;
+  border-radius: 16px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+  padding: 20px;
+  z-index: 9999;
+}
+
+.cookie-content p {
+  margin: 0 0 12px;
+  color: #1f2937;
+  line-height: 1.5;
+}
+
+.privacy-link {
+  display: inline-block;
+  margin-bottom: 16px;
+  color: #087f73;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.privacy-link:hover {
+  text-decoration: underline;
+}
+
+.cookie-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.cookie-actions button {
+  border: 1px solid #cbd5e1;
+  background-color: #f8fafc;
+  color: #111827;
+  border-radius: 8px;
+  padding: 8px 14px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.cookie-actions button:hover {
+  background-color: #e5e7eb;
+}
+
+.cookie-actions .accept-btn {
+  background-color: #087f73;
+  color: #ffffff;
+  border-color: #087f73;
+}
+
+.cookie-actions .accept-btn:hover {
+  background-color: #066b61;
+}
+
+.privacy-policy-section {
+  padding: 24px 36px;
+  line-height: 1.7;
+}
+
+.privacy-policy-section article {
+  margin-bottom: 28px;
+}
+
+.privacy-policy-section h3 {
+  margin-bottom: 10px;
+  color: #a97970;
+  font-size: 20px;
+}
+
+.privacy-policy-section p {
+  color: #111827;
+  font-size: 17px;
+}

@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta property="og:title" content="BizTrack Project by Sumayyah"/>
+  <meta property="og:description" content="A project born out of real small business challenges, now simplifying product, order, and finance management."/>
+  <meta property="og:image:secure_url" content="https://i.imgur.com/0O47fVi.jpg"/>
+  <meta property="og:url" content="https://sumusa.github.io/biztrack/"/>
+  <link rel="stylesheet" href="./styles.css"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
+  <link rel="icon" type="image/x-icon" href="./assets/favicon.ico">
+  <title>Privacy Policy - BizTrack</title>
+</head>
+
+<body>
+  <div class="language-switcher">
+    <button type="button" data-lang="en">EN</button>
+    <button type="button" data-lang="zh">中文</button>
+  </div>
+
+  <div id="sidebar" class="sidebar">
+    <div class="logo">
+      <a href="./index.html">
+        <i class="fas fa-b"></i>
+        <span data-i18n="app.name">BizTrack</span>
+      </a>
+      <i class="fa-solid fa-xmark" title="Close" onclick="closeSidebar()"></i>
+    </div>
+
+    <ul class="menu">
+      <li>
+        <a href="./index.html">
+          <i class="fa-solid fa-house"></i>
+          <span data-i18n="nav.backHome">Back Home</span>
+        </a>
+      </li>
+
+      <li class="logout">
+        <a href="./about.html">
+          <i class="fa-solid fa-users-line"></i>
+          <span data-i18n="nav.developer">Meet the Developer</span>
+        </a>
+      </li>
+    </ul>
+  </div>
+
+  <div class="main-content">
+    <div class="header-wrapper">
+      <div class="menu-icon" onclick="openSidebar()">
+        <i class="fa-solid fa-bars"></i>
+      </div>
+
+      <div class="header-title">
+        <h2 data-i18n="privacy.title">Privacy and Cookie Policy</h2>
+      </div>
+
+      <div class="user-info"></div>
+    </div>
+
+    <div class="about-container">
+      <section class="privacy-policy-section">
+        <article>
+          <h3 data-i18n="privacy.collectTitle">1. What We Collect</h3>
+          <p data-i18n="privacy.collectText">
+            BizTrack may collect basic information needed for product, order, and finance management. This may include product descriptions, order details, finance records, language preferences, and cookie choices.
+          </p>
+        </article>
+
+        <article>
+          <h3 data-i18n="privacy.whyTitle">2. Why We Collect It</h3>
+          <p data-i18n="privacy.whyText">
+            This information is collected to provide the main functions of the website, support business record management, improve usability, and remember user preferences.
+          </p>
+        </article>
+
+        <article>
+          <h3 data-i18n="privacy.useTitle">3. How We Use It</h3>
+          <p data-i18n="privacy.useText">
+            The information is used within the website to display, create, update, search, and manage business-related data. It is also used to keep the interface usable and consistent for the user.
+          </p>
+        </article>
+
+        <article>
+          <h3 data-i18n="privacy.cookieTitle">4. Cookie Choices</h3>
+          <p data-i18n="privacy.cookieText">
+            BizTrack uses necessary cookies or local storage to remember the user's cookie choice and language preference. Non-essential cookies are only enabled after the user gives consent.
+          </p>
+        </article>
+
+        <article>
+          <h3 data-i18n="privacy.thirdPartyTitle">5. Third Parties</h3>
+          <p data-i18n="privacy.thirdPartyText">
+            If the website uses third-party services such as charts, fonts, external libraries, or analytics tools, those services may process limited technical data according to their own privacy policies.
+          </p>
+        </article>
+
+        <article>
+          <h3 data-i18n="privacy.contactTitle">6. Contact</h3>
+          <p data-i18n="privacy.contactText">
+            For privacy-related questions, please contact the project team through the contact information provided on this website.
+          </p>
+        </article>
+      </section>
+    </div>
+  </div>
+
+  <!-- Cookie Banner -->
+  <div id="cookie-banner" class="cookie-banner" role="dialog" aria-label="Cookie consent" hidden>
+    <div class="cookie-content">
+      <p class="cookie-message">
+        <span data-i18n="cookie.message">
+          We use cookies that are necessary for the website to function. We may also use other cookies to analyse, improve and personalise our content and your digital experience. For more information,
+        </span>
+        <a href="./privacy.html" class="privacy-link" data-i18n="cookie.policyLink">
+          please see our Cookie Policy.
+        </a>
+      </p>
+    </div>
+  </div>
+
+  <script src="./i18n.js"></script>
+  <script src="./help.js"></script>
+</body>
+</html>
