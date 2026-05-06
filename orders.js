@@ -22,9 +22,9 @@ function showFeedback(message, type = 'success') {
         animation: slideIn 0.3s ease;
         background-color: ${type === 'success' ? '#28a745' : '#dc3545'};
     `;
-    
+
     document.body.appendChild(feedback);
-    
+
     setTimeout(() => {
         feedback.style.animation = 'slideOut 0.3s ease';
         setTimeout(() => feedback.remove(), 300);
@@ -183,7 +183,7 @@ function newOrder(event) {
 
   document.getElementById("order-form").reset();
   //adding
-  closeForm(); 
+  closeForm();
   showFeedback('Added successfully!', 'success');
 }
 
@@ -251,16 +251,29 @@ function renderOrders(orders) {
       const actionTd = document.createElement("td");
       actionTd.className = "action";
 
+      const editButton = document.createElement("button");
+      editButton.type = "button";
+      editButton.className = "action-button edit-button";
+      editButton.setAttribute("aria-label", `Edit order ${order.orderID}`);
+      editButton.addEventListener("click", function() { editRow(order.orderID); });
+
       const editIcon = document.createElement("i");
-      editIcon.title = "Edit";
       editIcon.className = "edit-icon fa-solid fa-pen-to-square";
-      editIcon.addEventListener("click", function() { editRow(order.orderID); });
-      actionTd.appendChild(editIcon);
+      editIcon.setAttribute("aria-hidden", "true");
+      editButton.appendChild(editIcon);
+      actionTd.appendChild(editButton);
+
+      const deleteButton = document.createElement("button");
+      deleteButton.type = "button";
+      deleteButton.className = "action-button delete-button";
+      deleteButton.setAttribute("aria-label", `Delete order ${order.orderID}`);
+      deleteButton.addEventListener("click", function() { deleteOrder(order.orderID); });
 
       const deleteIcon = document.createElement("i");
       deleteIcon.className = "delete-icon fas fa-trash-alt";
-      deleteIcon.addEventListener("click", function() { deleteOrder(order.orderID); });
-      actionTd.appendChild(deleteIcon);
+      deleteIcon.setAttribute("aria-hidden", "true");
+      deleteButton.appendChild(deleteIcon);
+      actionTd.appendChild(deleteButton);
 
       orderRow.appendChild(actionTd);
       orderTableBody.appendChild(orderRow);
@@ -357,7 +370,7 @@ function isDuplicateID(orderID, currentID) {
     return orders.some(order => order.orderID === orderID && order.orderID !== currentID);
 }
 
-function sortTable(column) {
+function sortTable(column, button) {
     const tbody = document.getElementById("tableBody");
     const rows = Array.from(tbody.querySelectorAll("tr"));
 
@@ -378,6 +391,18 @@ function sortTable(column) {
     rows.forEach(row => tbody.removeChild(row));
 
     sortedRows.forEach(row => tbody.appendChild(row));
+
+    updateSortState(button);
+}
+
+function updateSortState(activeButton) {
+    document.querySelectorAll("th[aria-sort]").forEach(th => {
+        th.setAttribute("aria-sort", "none");
+    });
+
+    if (activeButton) {
+        activeButton.closest("th").setAttribute("aria-sort", "ascending");
+    }
 }
 
 document.getElementById("searchInput").addEventListener("keyup", function(event) {
@@ -412,21 +437,21 @@ function exportToCSV() {
             orderStatus: order.orderStatus,
         };
     });
-  
+
     const csvContent = generateCSV(ordersToExport);
-  
+
     const blob = new Blob([csvContent], { type: 'text/csv' });
-  
+
     const link = document.createElement('a');
     link.href = window.URL.createObjectURL(blob);
     link.download = 'biztrack_order_table.csv';
-  
+
     document.body.appendChild(link);
     link.click();
-  
+
     document.body.removeChild(link);
 }
-  
+
 function generateCSV(data) {
     const headers = Object.keys(data[0]).join(',');
     const rows = data.map(order => Object.values(order).join(','));

@@ -22,9 +22,9 @@ function showFeedback(message, type = 'success') {
         animation: slideIn 0.3s ease;
         background-color: ${type === 'success' ? '#28a745' : '#dc3545'};
     `;
-    
+
     document.body.appendChild(feedback);
-    
+
     setTimeout(() => {
         feedback.style.animation = 'slideOut 0.3s ease';
         setTimeout(() => feedback.remove(), 300);
@@ -111,15 +111,15 @@ window.onload = function () {
         ];
 
         serialNumberCounter = transactions.length + 1
-  
+
         localStorage.setItem("bizTrackTransactions", JSON.stringify(transactions));
     }
-  
+
     renderTransactions(transactions);
 }
 
 function addOrUpdate(event) {
-    event.preventDefault(); 
+    event.preventDefault();
     let type = document.getElementById("submitBtn").textContent;
     if (type === 'Add') {
         newTransaction(event);
@@ -139,7 +139,7 @@ function newTransaction(event) {
 
     serialNumberCounter = transactions.length + 1;
     let trID = serialNumberCounter;
-    
+
     const transaction = {
       trID,
       trDate,
@@ -147,15 +147,15 @@ function newTransaction(event) {
       trAmount,
       trNotes,
     };
-    
+
     transactions.push(transaction);
-  
+
     renderTransactions(transactions);
     localStorage.setItem("bizTrackTransactions", JSON.stringify(transactions));
 
     serialNumberCounter++;
     displayExpenses();
-  
+
     document.getElementById("transaction-form").reset();
     closeForm();
     showFeedback('Added successfully!', 'success');
@@ -203,16 +203,29 @@ function renderTransactions(transactions) {
         const actionTd = document.createElement("td");
         actionTd.className = "action";
 
+        const editButton = document.createElement("button");
+        editButton.type = "button";
+        editButton.className = "action-button edit-button";
+        editButton.setAttribute("aria-label", `Edit expense ${transaction.trID}`);
+        editButton.addEventListener("click", function() { editRow(transaction.trID); });
+
         const editIcon = document.createElement("i");
-        editIcon.title = "Edit";
         editIcon.className = "edit-icon fa-solid fa-pen-to-square";
-        editIcon.addEventListener("click", function() { editRow(transaction.trID); });
-        actionTd.appendChild(editIcon);
+        editIcon.setAttribute("aria-hidden", "true");
+        editButton.appendChild(editIcon);
+        actionTd.appendChild(editButton);
+
+        const deleteButton = document.createElement("button");
+        deleteButton.type = "button";
+        deleteButton.className = "action-button delete-button";
+        deleteButton.setAttribute("aria-label", `Delete expense ${transaction.trID}`);
+        deleteButton.addEventListener("click", function() { deleteTransaction(transaction.trID); });
 
         const deleteIcon = document.createElement("i");
         deleteIcon.className = "delete-icon fas fa-trash-alt";
-        deleteIcon.addEventListener("click", function() { deleteTransaction(transaction.trID); });
-        actionTd.appendChild(deleteIcon);
+        deleteIcon.setAttribute("aria-hidden", "true");
+        deleteButton.appendChild(deleteIcon);
+        actionTd.appendChild(deleteButton);
 
         transactionRow.appendChild(actionTd);
         transactionTableBody.appendChild(transactionRow);
@@ -231,18 +244,18 @@ function displayExpenses() {
 
 function editRow(trID) {
     const trToEdit = transactions.find(transaction => transaction.trID == trID);
-    
-    document.getElementById("tr-id").value = trToEdit.trID;      
+
+    document.getElementById("tr-id").value = trToEdit.trID;
     document.getElementById("tr-date").value = trToEdit.trDate;
     document.getElementById("tr-category").value = trToEdit.trCategory;
     document.getElementById("tr-amount").value = trToEdit.trAmount;
     document.getElementById("tr-notes").value = trToEdit.trNotes;
-  
+
     document.getElementById("submitBtn").textContent = "Update";
 
     document.getElementById("transaction-form").style.display = "block";
   }
-  
+
 function deleteTransaction(trID) {
     if (!confirm('Are you sure you want to delete?')) {
     return;
@@ -284,7 +297,7 @@ function deleteTransaction(trID) {
     }
 }
 
-function sortTable(column) {
+function sortTable(column, button) {
     const tbody = document.getElementById("tableBody");
     const rows = Array.from(tbody.querySelectorAll("tr"));
 
@@ -305,6 +318,18 @@ function sortTable(column) {
     rows.forEach(row => tbody.removeChild(row));
 
     sortedRows.forEach(row => tbody.appendChild(row));
+
+    updateSortState(button);
+}
+
+function updateSortState(activeButton) {
+    document.querySelectorAll("th[aria-sort]").forEach(th => {
+        th.setAttribute("aria-sort", "none");
+    });
+
+    if (activeButton) {
+        activeButton.closest("th").setAttribute("aria-sort", "ascending");
+    }
 }
 
 document.getElementById("searchInput").addEventListener("keyup", function(event) {
@@ -335,21 +360,21 @@ function exportToCSV() {
             trNotes: transaction.trNotes,
         };
     });
-  
+
     const csvContent = generateCSV(transactionsToExport);
-  
+
     const blob = new Blob([csvContent], { type: 'text/csv' });
-  
+
     const link = document.createElement('a');
     link.href = window.URL.createObjectURL(blob);
     link.download = 'biztrack_expense_table.csv';
-  
+
     document.body.appendChild(link);
     link.click();
-  
+
     document.body.removeChild(link);
 }
-  
+
 function generateCSV(data) {
     const headers = Object.keys(data[0]).join(',');
     const rows = data.map(order => Object.values(order).join(','));

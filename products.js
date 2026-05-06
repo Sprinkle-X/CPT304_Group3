@@ -22,9 +22,9 @@ function showFeedback(message, type = 'success') {
         animation: slideIn 0.3s ease;
         background-color: ${type === 'success' ? '#28a745' : '#dc3545'};
     `;
-    
+
     document.body.appendChild(feedback);
-    
+
     setTimeout(() => {
         feedback.style.animation = 'slideOut 0.3s ease';
         setTimeout(() => feedback.remove(), 300);
@@ -200,16 +200,29 @@ function renderProducts(products) {
       const actionTd = document.createElement("td");
       actionTd.className = "action";
 
+      const editButton = document.createElement("button");
+      editButton.type = "button";
+      editButton.className = "action-button edit-button";
+      editButton.setAttribute("aria-label", `Edit product ${product.prodID}`);
+      editButton.addEventListener("click", function() { editRow(product.prodID); });
+
       const editIcon = document.createElement("i");
-      editIcon.title = "Edit";
       editIcon.className = "edit-icon fa-solid fa-pen-to-square";
-      editIcon.addEventListener("click", function() { editRow(product.prodID); });
-      actionTd.appendChild(editIcon);
+      editIcon.setAttribute("aria-hidden", "true");
+      editButton.appendChild(editIcon);
+      actionTd.appendChild(editButton);
+
+      const deleteButton = document.createElement("button");
+      deleteButton.type = "button";
+      deleteButton.className = "action-button delete-button";
+      deleteButton.setAttribute("aria-label", `Delete product ${product.prodID}`);
+      deleteButton.addEventListener("click", function() { deleteProduct(product.prodID); });
 
       const deleteIcon = document.createElement("i");
       deleteIcon.className = "delete-icon fas fa-trash-alt";
-      deleteIcon.addEventListener("click", function() { deleteProduct(product.prodID); });
-      actionTd.appendChild(deleteIcon);
+      deleteIcon.setAttribute("aria-hidden", "true");
+      deleteButton.appendChild(deleteIcon);
+      actionTd.appendChild(deleteButton);
 
       prodRow.appendChild(actionTd);
       prodTableBody.appendChild(prodRow);
@@ -282,7 +295,7 @@ function isDuplicateID(prodID, currentID) {
     return products.some(product => product.prodID === prodID && product.prodID !== currentID);
 }
 
-function sortTable(column) {
+function sortTable(column, button) {
     const tbody = document.getElementById("tableBody");
     const rows = Array.from(tbody.querySelectorAll("tr"));
 
@@ -302,6 +315,18 @@ function sortTable(column) {
     rows.forEach(row => tbody.removeChild(row));
 
     sortedRows.forEach(row => tbody.appendChild(row));
+
+    updateSortState(button);
+}
+
+function updateSortState(activeButton) {
+    document.querySelectorAll("th[aria-sort]").forEach(th => {
+        th.setAttribute("aria-sort", "none");
+    });
+
+    if (activeButton) {
+        activeButton.closest("th").setAttribute("aria-sort", "ascending");
+    }
 }
 
 document.getElementById("searchInput").addEventListener("keyup", function(event) {
