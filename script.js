@@ -117,21 +117,25 @@ window.onload = function () {
   const ordDiv = document.getElementById('num-orders');
 
   revDiv.replaceChildren(
-    createAmountSpan("Revenue", `$${totalRevenues.toFixed(2)}`)
+    createAmountSpan("dashboard.revenue", "Revenue", `$${totalRevenues.toFixed(2)}`)
   );
 
   expDiv.replaceChildren(
-    createAmountSpan("Expenses", `$${totalExpenses.toFixed(2)}`)
+    createAmountSpan("dashboard.expenses", "Expenses", `$${totalExpenses.toFixed(2)}`)
   );
 
   balDiv.replaceChildren(
-    createAmountSpan("Balance", `$${totalBalance.toFixed(2)}`)
+    createAmountSpan("dashboard.balance", "Balance", `$${totalBalance.toFixed(2)}`)
   );
 
   ordDiv.replaceChildren(
-    createAmountSpan("Orders", numOrders)
+    createAmountSpan("dashboard.orders", "Orders", numOrders)
   );
-};
+
+  if (window.i18n && typeof window.i18n.applyTranslations === "function") {
+    window.i18n.applyTranslations();
+  }
+}
 
 function calculateExpTotal(transactions) {
   return transactions.reduce((total, transaction) => total + transaction.trAmount, 0);
@@ -140,13 +144,21 @@ function calculateRevTotal(orders) {
   return orders.reduce((total, order) => total + order.orderTotal, 0);
 }
 
-function createAmountSpan(title, amount) {
+function createAmountSpan(i18nKey, fallbackTitle, amount) {
   const titleSpan = document.createElement("span");
   titleSpan.className = "title";
-  titleSpan.textContent = title;
+  titleSpan.setAttribute("data-i18n", i18nKey);
+
+  if (window.i18n) {
+    titleSpan.textContent = window.i18n.t(i18nKey);
+  } else {
+    titleSpan.textContent = fallbackTitle;
+  }
+
   const valueSpan = document.createElement("span");
   valueSpan.className = "amount-value";
   valueSpan.textContent = amount;
+
   const frag = document.createDocumentFragment();
   frag.appendChild(titleSpan);
   frag.appendChild(valueSpan);

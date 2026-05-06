@@ -10,16 +10,20 @@
     <link rel="stylesheet" href="./styles.css"/>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
     <link rel="icon" type="image/x-icon" href="./assets/favicon.ico">
-    <title>Orders - BizTrack</title>
+    <title data-i18n="page.orders.title">Orders - BizTrack</title>
 </head>
 <body>
+    <div class="language-switcher">
+        <button type="button" data-lang="en">EN</button>
+        <button type="button" data-lang="zh">中文</button>
+    </div>
     <div id="sidebar" class="sidebar">
         <div class="logo">
             <a href="./index.html">
                 <i class="fas fa-b"></i>
-                <span>BizTrack</span>
+                <span data-i18n="app.name">BizTrack</span>
             </a>
-            <button type="button" class="icon-button sidebar-close" aria-label="Close sidebar" onclick="closeSidebar()">
+            <button type="button" class="icon-button sidebar-close" aria-label="Close sidebar" data-i18n-aria-label="common.closeSidebar" onclick="closeSidebar()">
                 <i class="fa-solid fa-xmark" aria-hidden="true"></i>
             </button>
         </div>
@@ -27,37 +31,37 @@
             <li>
                 <a href="./index.html">
                     <i class="fa-solid fa-gauge-high"></i>
-                    <span>Dashboard</span>
+                    <span data-i18n="nav.dashboard">Dashboard</span>
                 </a>
             </li>
             <li>
                 <a href="./products.html">
                     <i class="fas fa-dolly"></i>
-                    <span>Products</span>
+                    <span data-i18n="nav.products">Products</span>
                 </a>
             </li>
             <li class="active">
                 <a href="./orders.html">
                     <i class="fas fa-shopping-cart"></i>
-                    <span>Orders</span>
+                    <span data-i18n="nav.orders">Orders</span>
                 </a>
             </li>
             <li>
                 <a href="./finances.html">
                     <i class="fas fa-sack-dollar"></i>
-                    <span>Expenses</span>
+                    <span data-i18n="nav.expenses">Expenses</span>
                 </a>
             </li>
             <li>
                 <a href="./help.html">
                     <i class="fas fa-question-circle"></i>
-                    <span>Help</span>
+                    <span data-i18n="nav.help">Help</span>
                 </a>
             </li>
             <li class="logout">
                 <a href="./about.html">
                     <i class="fa-solid fa-users-line"></i>
-                    <span>Meet the Developer</span>
+                    <span data-i18n="nav.developer">Meet the Developer</span>
                 </a>
             </li>
         </ul>
@@ -65,20 +69,20 @@
 
     <div class="main-content">
         <div class="header-wrapper">
-            <button type="button" class="menu-icon icon-button" aria-label="Open sidebar" onclick="openSidebar()">
+            <button type="button" class="menu-icon icon-button" aria-label="Open sidebar" data-i18n-aria-label="common.openSidebar" onclick="openSidebar()">
                 <i class="fa-solid fa-bars" aria-hidden="true"></i>
             </button>
             <div class="header-title">
                 <!-- <span>Primary</span> -->
-                <h2>Orders</h2>
+                <h2 data-i18n="nav.orders">Orders</h2>
             </div>
             <div class="user-info">
                 <div class="search-box">
-                    <button type="button" class="search-button" aria-label="Search orders" onclick="performSearch()">
+                    <button type="button" class="search-button" aria-label="Search orders" data-i18n-aria-label="orders.searchOrders" onclick="performSearch()">
                         <i class="fas fa-search" aria-hidden="true"></i>
                     </button>
-                    <label class="visually-hidden" for="searchInput">Search orders</label>
-                    <input type="search" id="searchInput" placeholder="Search">
+                    <label class="visually-hidden" for="searchInput" data-i18n="orders.searchOrders">Search orders</label>
+                    <input type="search" id="searchInput" placeholder="Search" data-i18n-placeholder="common.search">
                 </div>
                 <!-- <i class="fas fa-user-alt fa-xl"></i> -->
             </div>
@@ -86,10 +90,10 @@
 
         <div class="table-wrapper">
             <div class="product-title">
-                <h3 class="main-title">Orders</h3>
+                <h3 class="main-title" data-i18n="nav.orders">Orders</h3>
                 <div class="order-button">
-                    <button class="add-button" onclick="openForm()">Add Order</button>
-                    <button class="download-button" onclick="exportToCSV()">Export to CSV</button>
+                    <button class="add-button" onclick="openForm()" data-i18n="orders.addOrder">Add Order</button>
+                    <button class="download-button" onclick="exportToCSV()" data-i18n="common.exportCSV">Export to CSV</button>
                 </div>
             </div>
 
@@ -98,15 +102,15 @@
                     <div class="form-columns">
 
                         <div class="order-first-col">
-                            <label for="order-id"><b>Order ID: </b></label>
+                            <label for="order-id"><b data-i18n="orders.orderId">Order ID: </b></label>
                             <input type="text" id="order-id" placeholder="1001" required>
 
-                            <label for="order-date"><b>Order Date: </b></label>
+                            <label for="order-date"><b data-i18n="orders.orderDate">Order Date: </b></label>
                             <input type="date" id="order-date" required>
 
-                            <label for="item-name"><b>Item Name: </b></label>
+                            <label for="item-name"><b data-i18n="orders.itemName">Item Name: </b></label>
                             <select name="item-name" id="item-name" required>
-                                <option value="" disabled selected hidden>Choose an item</option>
+                                <option value="" disabled selected hidden data-i18n="orders.chooseItem">Choose an item</option>
                                 <optgroup label="Hats">
                                     <option value="Baseball caps">Baseball caps</option>
                                     <option value="Snapbacks">Snapbacks</option>
@@ -137,37 +141,37 @@
                         </div>
 
                         <div class="order-second-col">
-                            <label for="item-price"><b>Item Price:</b></label>
+                            <label for="item-price"><b data-i18n="orders.itemPrice">Item Price:</b></label>
                             <input type="number" id="item-price" placeholder="$0.00" min="0.00" max="10000.00" step="0.01" required>
 
-                            <label for="qty-bought"><b>Quantity Bought:</b></label>
+                            <label for="qty-bought"><b data-i18n="orders.quantityBought">Quantity Bought:</b></label>
                             <input type="number" id="qty-bought" placeholder="1" required>
 
-                            <label for="shipping"><b>Shipping fee:</b></label>
+                            <label for="shipping"><b data-i18n="orders.shippingFee">Shipping fee:</b></label>
                             <input type="number" id="shipping" placeholder="$2.00" min="0.00" max="10000.00" step="0.01" required>
                         </div>
 
                         <div class="order-third-col">
-                            <label for="taxes"><b>Taxes (VAT/GST/HST):</b></label>
+                            <label for="taxes"><b data-i18n="orders.taxes">Taxes (VAT/GST/HST):</b></label>
                             <input type="number" id="taxes" placeholder="$2.00" min="0.00" max="10000.00" step="0.01" required>
 
-                            <label for="order-status"><b>Order Status:</b></label>
+                            <label for="order-status"><b data-i18n="orders.orderStatus">Order Status:</b></label>
                             <select name="order-status" id="order-status" required>
-                                <option value="" disabled selected hidden>Choose a status</option>
-                                <option value="Pending" class="pending">Pending</option>
-                                <option value="Processing" class="processing">Processing</option>
-                                <option value="Shipped" class="shipped">Shipped</option>
-                                <option value="Delivered" class="delivered">Delivered</option>
+                                <option value="" disabled selected hidden data-i18n="orders.chooseStatus">Choose a status</option>
+                                <option value="Pending" class="pending" data-i18n="status.pending">Pending</option>
+                                <option value="Processing" class="processing" data-i18n="status.processing">Processing</option>
+                                <option value="Shipped" class="shipped" data-i18n="status.shipped">Shipped</option>
+                                <option value="Delivered" class="delivered" data-i18n="status.delivered">Delivered</option>
                             </select>
 
-                            <label for="order-total"><b>Total Order Amount: <small>(Calculated)</small></b></label>
+                            <label for="order-total"><b><span data-i18n="orders.totalOrderAmount">Total Order Amount:</span><small data-i18n="common.calculated">(Calculated)</small></b></label>
                             <input type="number" id="order-total" placeholder="$0.00" min="0.00" max="10000.00" step="0.01" disabled>
                         </div>
                     </div>
                     
                     <div class="button-col">
-                        <button type="submit" class="btn" id="submitBtn">Add</button>
-                        <button type="button" class="btn cancel" onclick="closeForm()">Cancel</button>
+                        <button type="submit" class="btn" id="submitBtn" data-mode="add" data-i18n="common.add">Add</button>
+                        <button type="button" class="btn cancel" onclick="closeForm()" data-i18n="common.cancel">Cancel</button>
                     </div>
                 </form>
             </div>
@@ -176,16 +180,70 @@
                 <table id="order-table">
                     <thead>
                         <tr>
-                            <th scope="col" aria-sort="none"><button type="button" class="sort-button" onclick="sortTable('orderID', this)">Order ID <i class="fa-solid fa-sort" aria-hidden="true"></i></button></th>
-                            <th scope="col" aria-sort="none"><button type="button" class="sort-button" onclick="sortTable('orderDate', this)">Order Date <i class="fa-solid fa-sort" aria-hidden="true"></i></button></th>
-                            <th scope="col" aria-sort="none"><button type="button" class="sort-button" onclick="sortTable('itemName', this)">Item Name <i class="fa-solid fa-sort" aria-hidden="true"></i></button></th>
-                            <th scope="col" aria-sort="none"><button type="button" class="sort-button" onclick="sortTable('itemPrice', this)">Item Price <i class="fa-solid fa-sort" aria-hidden="true"></i></button></th>
-                            <th scope="col" aria-sort="none"><button type="button" class="sort-button" onclick="sortTable('qtyBought', this)">Qty <i class="fa-solid fa-sort" aria-hidden="true"></i></button></th>
-                            <th scope="col" aria-sort="none"><button type="button" class="sort-button" onclick="sortTable('shipping', this)">Shipping Fee <i class="fa-solid fa-sort" aria-hidden="true"></i></button></th>
-                            <th scope="col" aria-sort="none"><button type="button" class="sort-button" onclick="sortTable('taxes', this)">Taxes <i class="fa-solid fa-sort" aria-hidden="true"></i></button></th>
-                            <th scope="col" aria-sort="none"><button type="button" class="sort-button" onclick="sortTable('orderTotal', this)">Order Total <i class="fa-solid fa-sort" aria-hidden="true"></i></button></th>
-                            <th scope="col" aria-sort="none"><button type="button" class="sort-button" onclick="sortTable('orderStatus', this)">Order Status <i class="fa-solid fa-sort" aria-hidden="true"></i></button></th>
-                            <th scope="col">Action</th>
+                        <th scope="col" aria-sort="none">
+                            <button type="button" class="sort-button" onclick="sortTable('orderID', this)">
+                            <span data-i18n="orders.orderIdShort">Order ID</span>
+                            <i class="fa-solid fa-sort" aria-hidden="true"></i>
+                            </button>
+                        </th>
+
+                        <th scope="col" aria-sort="none">
+                            <button type="button" class="sort-button" onclick="sortTable('orderDate', this)">
+                            <span data-i18n="orders.orderDateShort">Order Date</span>
+                            <i class="fa-solid fa-sort" aria-hidden="true"></i>
+                            </button>
+                        </th>
+
+                        <th scope="col" aria-sort="none">
+                            <button type="button" class="sort-button" onclick="sortTable('itemName', this)">
+                            <span data-i18n="orders.itemNameShort">Item Name</span>
+                            <i class="fa-solid fa-sort" aria-hidden="true"></i>
+                            </button>
+                        </th>
+
+                        <th scope="col" aria-sort="none">
+                            <button type="button" class="sort-button" onclick="sortTable('itemPrice', this)">
+                            <span data-i18n="orders.itemPriceShort">Item Price</span>
+                            <i class="fa-solid fa-sort" aria-hidden="true"></i>
+                            </button>
+                        </th>
+
+                        <th scope="col" aria-sort="none">
+                            <button type="button" class="sort-button" onclick="sortTable('qtyBought', this)">
+                            <span data-i18n="orders.qty">Qty</span>
+                            <i class="fa-solid fa-sort" aria-hidden="true"></i>
+                            </button>
+                        </th>
+
+                        <th scope="col" aria-sort="none">
+                            <button type="button" class="sort-button" onclick="sortTable('shipping', this)">
+                            <span data-i18n="orders.shippingFeeShort">Shipping Fee</span>
+                            <i class="fa-solid fa-sort" aria-hidden="true"></i>
+                            </button>
+                        </th>
+
+                        <th scope="col" aria-sort="none">
+                            <button type="button" class="sort-button" onclick="sortTable('taxes', this)">
+                            <span data-i18n="orders.taxesShort">Taxes</span>
+                            <i class="fa-solid fa-sort" aria-hidden="true"></i>
+                            </button>
+                        </th>
+
+                        <th scope="col" aria-sort="none">
+                            <button type="button" class="sort-button" onclick="sortTable('orderTotal', this)">
+                            <span data-i18n="orders.orderTotal">Order Total</span>
+                            <i class="fa-solid fa-sort" aria-hidden="true"></i>
+                            </button>
+                        </th>
+
+                        <th scope="col" aria-sort="none">
+                            <button type="button" class="sort-button" onclick="sortTable('orderStatus', this)">
+                            <span data-i18n="orders.orderStatusShort">Order Status</span>
+                            <i class="fa-solid fa-sort" aria-hidden="true"></i>
+                            </button>
+                        </th>
+
+                        <th scope="col" data-i18n="common.action">Action</th>
                         </tr>
                     </thead>
                     <tbody id="tableBody">
@@ -202,6 +260,7 @@
         </div>
     </div>
 
+    <script src="./i18n.js"></script>
     <script src="./orders.js"></script>
 </body>
 </html>

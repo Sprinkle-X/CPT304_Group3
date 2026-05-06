@@ -1,4 +1,16 @@
-// ========== 新增：用户反馈系统 ==========
+function tr(key, fallback) {
+    return window.i18n && typeof window.i18n.t === "function"
+        ? window.i18n.t(key)
+        : fallback;
+}
+
+function applyI18nNow() {
+    if (window.i18n && typeof window.i18n.applyTranslations === "function") {
+        window.i18n.applyTranslations();
+    }
+}
+
+// user feedback logic
 function showFeedback(message, type = 'success') {
     const existingFeedback = document.querySelector('.feedback-message');
     if (existingFeedback) {
@@ -120,12 +132,15 @@ window.onload = function () {
 
 function addOrUpdate(event) {
     event.preventDefault();
-    let type = document.getElementById("submitBtn").textContent;
-    if (type === 'Add') {
+
+    const submitBtn = document.getElementById("submitBtn");
+    const mode = submitBtn.dataset.mode || "add";
+
+    if (mode === "add") {
         newTransaction(event);
-    } else if (type === 'Update'){
+    } else if (mode === "update") {
         const trId = document.getElementById("tr-id").value;
-        updateTransaction(+trId); // convert to number
+        updateTransaction(+trId);
     }
 }
 
@@ -158,7 +173,7 @@ function newTransaction(event) {
 
     document.getElementById("transaction-form").reset();
     closeForm();
-    showFeedback('Added successfully!', 'success');
+    showFeedback(tr("common.addedSuccessfully", "Added successfully!"), "success");
 }
 
 
@@ -206,7 +221,7 @@ function renderTransactions(transactions) {
         const editButton = document.createElement("button");
         editButton.type = "button";
         editButton.className = "action-button edit-button";
-        editButton.setAttribute("aria-label", `Edit expense ${transaction.trID}`);
+        editButton.setAttribute("aria-label", `${tr("common.editExpense", "Edit expense")} ${transaction.trID}`);
         editButton.addEventListener("click", function() { editRow(transaction.trID); });
 
         const editIcon = document.createElement("i");
@@ -218,7 +233,7 @@ function renderTransactions(transactions) {
         const deleteButton = document.createElement("button");
         deleteButton.type = "button";
         deleteButton.className = "action-button delete-button";
-        deleteButton.setAttribute("aria-label", `Delete expense ${transaction.trID}`);
+        deleteButton.setAttribute("aria-label", `${tr("common.deleteExpense", "Delete expense")} ${transaction.trID}`);
         deleteButton.addEventListener("click", function() { deleteTransaction(transaction.trID); });
 
         const deleteIcon = document.createElement("i");
@@ -231,6 +246,7 @@ function renderTransactions(transactions) {
         transactionTableBody.appendChild(transactionRow);
   });
   displayExpenses();
+  applyI18nNow();
 }
 
 function displayExpenses() {
@@ -239,7 +255,7 @@ function displayExpenses() {
     const totalExpenses = transactions
         .reduce((total, transaction) => total + transaction.trAmount,0);
 
-    resultElement.textContent = `Total Expenses: $${totalExpenses.toFixed(2)}`;
+    resultElement.innerHTML = `<span data-i18n="expenses.totalExpenses">Total Expenses</span>: $${totalExpenses.toFixed(2)}`;
 }
 
 function editRow(trID) {
@@ -251,13 +267,16 @@ function editRow(trID) {
     document.getElementById("tr-amount").value = trToEdit.trAmount;
     document.getElementById("tr-notes").value = trToEdit.trNotes;
 
-    document.getElementById("submitBtn").textContent = "Update";
+    const submitBtn = document.getElementById("submitBtn");
+    submitBtn.dataset.mode = "update";
+    submitBtn.setAttribute("data-i18n", "common.update");
+    submitBtn.textContent = tr("common.update", "Update");
 
     document.getElementById("transaction-form").style.display = "block";
   }
 
 function deleteTransaction(trID) {
-    if (!confirm('Are you sure you want to delete?')) {
+    if (!confirm(tr("common.confirmDelete", "Are you sure you want to delete?"))) {
     return;
 }
     const indexToDelete = transactions.findIndex(transaction => transaction.trID == trID);
@@ -268,7 +287,7 @@ function deleteTransaction(trID) {
         localStorage.setItem("bizTrackTransactions", JSON.stringify(transactions));
 
         renderTransactions(transactions);
-        showFeedback('Deleted successfully!', 'success');
+       showFeedback(tr("common.deletedSuccessfully", "Deleted successfully!"), "success");
     }
 }
 
@@ -291,9 +310,14 @@ function deleteTransaction(trID) {
         renderTransactions(transactions);
 
         document.getElementById("transaction-form").reset();
-        document.getElementById("submitBtn").textContent = "Add";
+        
+        const submitBtn = document.getElementById("submitBtn");
+        submitBtn.dataset.mode = "add";
+        submitBtn.setAttribute("data-i18n", "common.add");
+        submitBtn.textContent = tr("common.add", "Add");
+
         closeForm();
-        showFeedback('Updated successfully!', 'success');
+        showFeedback(tr("common.updatedSuccessfully", "Updated successfully!"), "success");
     }
 }
 

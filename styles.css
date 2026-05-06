@@ -716,3 +716,24 @@ ol {
       display: none;
     }
 } */
+
+
+
+.language-switcher {
+  position: fixed;
+  top: 10px;
+  left: 50px;
+  z-index: 9999;
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+}
+
+.language-switcher button {
+  cursor: pointer;
+  pointer-events: auto;
+  background: white;
+  border: 1px solid #ccc;
+  padding: 4px 8px;
+  font-size: 14px;
+}

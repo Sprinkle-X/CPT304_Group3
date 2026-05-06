@@ -1,4 +1,4 @@
-// ========== 新增：用户反馈系统 ==========
+// user feedback logic
 function showFeedback(message, type = 'success') {
     const existingFeedback = document.querySelector('.feedback-message');
     if (existingFeedback) {
