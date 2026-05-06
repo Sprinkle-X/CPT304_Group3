@@ -1,4 +1,16 @@
-// ========== 新增：用户反馈系统 ==========
+function tr(key, fallback) {
+    return window.i18n && typeof window.i18n.t === "function"
+        ? window.i18n.t(key)
+        : fallback;
+}
+
+function applyI18nNow() {
+    if (window.i18n && typeof window.i18n.applyTranslations === "function") {
+        window.i18n.applyTranslations();
+    }
+}
+
+// user feedback logic
 function showFeedback(message, type = 'success') {
     const existingFeedback = document.querySelector('.feedback-message');
     if (existingFeedback) {
@@ -137,10 +149,12 @@ window.onload = function () {
 
 function addOrUpdate(event) {
     event.preventDefault();
-    let type = document.getElementById("submitBtn").textContent;
-    if (type === 'Add') {
+    const submitBtn = document.getElementById("submitBtn");
+    const mode = submitBtn.dataset.mode || "add";
+
+    if (mode === "add") {
         newOrder(event);
-    } else if (type === 'Update'){
+    } else if (mode === "update") {
         const orderID = document.getElementById("order-id").value;
         updateOrder(orderID);
     }
@@ -160,7 +174,7 @@ function newOrder(event) {
   const orderStatus = document.getElementById("order-status").value;
 
   if (isDuplicateID(orderID, null)) {
-    alert("Order ID already exists. Please use a unique ID.");
+    alert(tr("orders.duplicateId", "Order ID already exists. Please use a unique ID."));
     return;
   }
 
@@ -184,7 +198,7 @@ function newOrder(event) {
   document.getElementById("order-form").reset();
   //adding
   closeForm();
-  showFeedback('Added successfully!', 'success');
+  showFeedback(tr("common.addedSuccessfully", "Added successfully!"), "success");
 }
 
 
@@ -198,87 +212,102 @@ function renderOrders(orders) {
         "Processing": "processing",
         "Shipped": "shipped",
         "Delivered": "delivered"
-    }
+    };
+
+    const statusI18nMap = {
+        "Pending": "status.pending",
+        "Processing": "status.processing",
+        "Shipped": "status.shipped",
+        "Delivered": "status.delivered"
+    };
 
     orderToRender.forEach(order => {
-      const orderRow = document.createElement("tr");
-      orderRow.className = "order-row";
+        const orderRow = document.createElement("tr");
+        orderRow.className = "order-row";
 
-      orderRow.dataset.orderID = order.orderID;
-      orderRow.dataset.orderDate = order.orderDate;
-      orderRow.dataset.itemName = order.itemName;
-      orderRow.dataset.itemPrice = order.itemPrice;
-      orderRow.dataset.qtyBought = order.qtyBought;
-      orderRow.dataset.shipping = order.shipping;
-      orderRow.dataset.taxes = order.taxes;
-      orderRow.dataset.orderTotal = order.orderTotal;
-      orderRow.dataset.orderStatus = order.orderStatus;
+        orderRow.dataset.orderID = order.orderID;
+        orderRow.dataset.orderDate = order.orderDate;
+        orderRow.dataset.itemName = order.itemName;
+        orderRow.dataset.itemPrice = order.itemPrice;
+        orderRow.dataset.qtyBought = order.qtyBought;
+        orderRow.dataset.shipping = order.shipping;
+        orderRow.dataset.taxes = order.taxes;
+        orderRow.dataset.orderTotal = order.orderTotal;
+        orderRow.dataset.orderStatus = order.orderStatus;
 
-      const formattedPrice = typeof order.itemPrice === 'number' ? `$${order.itemPrice.toFixed(2)}` : '';
-      const formattedShipping = typeof order.shipping === 'number' ? `$${order.shipping.toFixed(2)}` : '';
-      const formattedTaxes = typeof order.taxes === 'number' ? `$${order.taxes.toFixed(2)}` : '';
-      const formattedTotal = typeof order.orderTotal === 'number' ? `$${order.orderTotal.toFixed(2)}` : '';
+        const formattedPrice = typeof order.itemPrice === 'number' ? `$${order.itemPrice.toFixed(2)}` : '';
+        const formattedShipping = typeof order.shipping === 'number' ? `$${order.shipping.toFixed(2)}` : '';
+        const formattedTaxes = typeof order.taxes === 'number' ? `$${order.taxes.toFixed(2)}` : '';
+        const formattedTotal = typeof order.orderTotal === 'number' ? `$${order.orderTotal.toFixed(2)}` : '';
 
-      const textFields = [
-        order.orderID,
-        order.orderDate,
-        order.itemName,
-        formattedPrice,
-        order.qtyBought,
-        formattedShipping,
-        formattedTaxes
-      ];
-      textFields.forEach(text => {
-        const td = document.createElement("td");
-        td.textContent = text;
-        orderRow.appendChild(td);
-      });
+        const textFields = [
+            order.orderID,
+            order.orderDate,
+            order.itemName,
+            formattedPrice,
+            order.qtyBought,
+            formattedShipping,
+            formattedTaxes
+        ];
+        textFields.forEach(text => {
+            const td = document.createElement("td");
+            td.textContent = text;
+            orderRow.appendChild(td);
+        });
 
-      const totalTd = document.createElement("td");
-      totalTd.className = "order-total";
-      totalTd.textContent = formattedTotal;
-      orderRow.appendChild(totalTd);
+        const totalTd = document.createElement("td");
+        totalTd.className = "order-total";
+        totalTd.textContent = formattedTotal;
+        orderRow.appendChild(totalTd);``
 
-      const statusTd = document.createElement("td");
-      const statusDiv = document.createElement("div");
-      statusDiv.className = "status " + statusMap[order.orderStatus];
-      const statusSpan = document.createElement("span");
-      statusSpan.textContent = order.orderStatus;
-      statusDiv.appendChild(statusSpan);
-      statusTd.appendChild(statusDiv);
-      orderRow.appendChild(statusTd);
+        const statusTd = document.createElement("td");
+        const statusDiv = document.createElement("div");
 
-      const actionTd = document.createElement("td");
-      actionTd.className = "action";
+        const statusClass = statusMap[order.orderStatus] || "";
+        const statusKey = statusI18nMap[order.orderStatus] || "";
 
-      const editButton = document.createElement("button");
-      editButton.type = "button";
-      editButton.className = "action-button edit-button";
-      editButton.setAttribute("aria-label", `Edit order ${order.orderID}`);
-      editButton.addEventListener("click", function() { editRow(order.orderID); });
+        statusDiv.className = "status " + statusClass;
 
-      const editIcon = document.createElement("i");
-      editIcon.className = "edit-icon fa-solid fa-pen-to-square";
-      editIcon.setAttribute("aria-hidden", "true");
-      editButton.appendChild(editIcon);
-      actionTd.appendChild(editButton);
+        const statusSpan = document.createElement("span");
+        statusSpan.setAttribute("data-i18n", statusKey);
+        statusSpan.textContent = tr(statusKey, order.orderStatus);
 
-      const deleteButton = document.createElement("button");
-      deleteButton.type = "button";
-      deleteButton.className = "action-button delete-button";
-      deleteButton.setAttribute("aria-label", `Delete order ${order.orderID}`);
-      deleteButton.addEventListener("click", function() { deleteOrder(order.orderID); });
+        statusDiv.appendChild(statusSpan);
+        statusTd.appendChild(statusDiv);
+        orderRow.appendChild(statusTd);
 
-      const deleteIcon = document.createElement("i");
-      deleteIcon.className = "delete-icon fas fa-trash-alt";
-      deleteIcon.setAttribute("aria-hidden", "true");
-      deleteButton.appendChild(deleteIcon);
-      actionTd.appendChild(deleteButton);
+        const actionTd = document.createElement("td");
+        actionTd.className = "action";
 
-      orderRow.appendChild(actionTd);
-      orderTableBody.appendChild(orderRow);
-  });
+        const editButton = document.createElement("button");
+        editButton.type = "button";
+        editButton.className = "action-button edit-button";
+        editButton.setAttribute("aria-label", `${tr("common.editOrder", "Edit order")} ${order.orderID}`);
+        editButton.addEventListener("click", function() { editRow(order.orderID); });
+
+        const editIcon = document.createElement("i");
+        editIcon.className = "edit-icon fa-solid fa-pen-to-square";
+        editIcon.setAttribute("aria-hidden", "true");
+        editButton.appendChild(editIcon);
+        actionTd.appendChild(editButton);
+
+        const deleteButton = document.createElement("button");
+        deleteButton.type = "button";
+        deleteButton.className = "action-button delete-button";
+        deleteButton.setAttribute("aria-label", `${tr("common.deleteOrder", "Delete order")} ${order.orderID}`);
+        deleteButton.addEventListener("click", function() { deleteOrder(order.orderID); });
+
+        const deleteIcon = document.createElement("i");
+        deleteIcon.className = "delete-icon fas fa-trash-alt";
+        deleteIcon.setAttribute("aria-hidden", "true");
+        deleteButton.appendChild(deleteIcon);
+        actionTd.appendChild(deleteButton);
+
+        orderRow.appendChild(actionTd);
+        orderTableBody.appendChild(orderRow);
+    });
   displayRevenue();
+  applyI18nNow();
 }
 
 function displayRevenue() {
@@ -287,7 +316,7 @@ function displayRevenue() {
     const totalRevenue = orders
         .reduce((total, order) => total + order.orderTotal, 0);
 
-    resultElement.textContent = `Total Revenue: $${totalRevenue.toFixed(2)}`;
+    resultElement.innerHTML = `<span data-i18n="orders.totalRevenue">Total Revenue</span>: $${totalRevenue.toFixed(2)}`;
 }
 
 function editRow(orderID) {
@@ -303,14 +332,17 @@ function editRow(orderID) {
     document.getElementById("order-total").value = orderToEdit.orderTotal;
     document.getElementById("order-status").value = orderToEdit.orderStatus;
 
-    document.getElementById("submitBtn").textContent = "Update";
+    const submitBtn = document.getElementById("submitBtn");
+    submitBtn.dataset.mode = "update";
+    submitBtn.setAttribute("data-i18n", "common.update");
+    submitBtn.textContent = tr("common.update", "Update");
 
     document.getElementById("order-form").style.display = "block";
 }
 
 function deleteOrder(orderID) {
     //adding
-    if (!confirm('Are you sure you want to delete?')) {
+    if (!confirm(tr("common.confirmDelete", "Are you sure you want to delete?"))) {
     return;
 }
   const indexToDelete = orders.findIndex(order => order.orderID === orderID);
@@ -322,7 +354,7 @@ function deleteOrder(orderID) {
 
       renderOrders(orders);
       //adding
-      showFeedback('Deleted successfully!', 'success');
+      showFeedback(tr("common.deletedSuccessfully", "Deleted successfully!"), "success");
 
   }
 }
@@ -348,7 +380,7 @@ function updateOrder(orderID) {
         };
 
         if (isDuplicateID(updatedOrder.orderID, orderID)) {
-            alert("Order ID already exists. Please use a unique ID.");
+            alert(tr("orders.duplicateId", "Order ID already exists. Please use a unique ID."));
             return;
         }
 
@@ -359,10 +391,13 @@ function updateOrder(orderID) {
         renderOrders(orders);
 
         document.getElementById("order-form").reset();
-        document.getElementById("submitBtn").textContent = "Add";
+        const submitBtn = document.getElementById("submitBtn");
+        submitBtn.dataset.mode = "add";
+        submitBtn.setAttribute("data-i18n", "common.add");
+        submitBtn.textContent = tr("common.add", "Add");
         //adding
         closeForm();
-        showFeedback('Updated successfully!', 'success');
+        showFeedback(tr("common.updatedSuccessfully", "Updated successfully!"), "success");
     }
 }
 
