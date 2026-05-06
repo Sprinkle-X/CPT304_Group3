@@ -8,6 +8,7 @@ const translations = {
     "nav.expenses": "Expenses",
     "nav.help": "Help",
     "nav.developer": "Meet the Developer",
+    "nav.backHome": "Back Home",
 
     "page.dashboard.title": "Dashboard - BizTrack",
     "page.products.title": "Products - BizTrack",
@@ -97,7 +98,27 @@ const translations = {
     "expenses.amountShort": "Amount",
     "expenses.notesShort": "Notes",
     "expenses.totalExpenses": "Total Expenses",
-    "expenses.notesPlaceholder": "Enter notes"
+    "expenses.notesPlaceholder": "Enter notes",
+
+    "cookie.message": "We use necessary cookies to make this website work. With your consent, we may also use non-essential cookies to improve the user experience.",
+    "cookie.privacyLink": "Privacy Policy",
+    "cookie.necessaryOnly": "Necessary Only",
+    "cookie.reject": "Reject",
+    "cookie.acceptAll": "Accept All",
+
+    "privacy.title": "Privacy and Cookie Policy",
+    "privacy.collectTitle": "1. What We Collect",
+    "privacy.collectText": "BizTrack may collect basic information needed for product, order, and finance management. This may include product descriptions, order details, finance records, language preferences, and cookie choices.",
+    "privacy.whyTitle": "2. Why We Collect It",
+    "privacy.whyText": "This information is collected to provide the main functions of the website, support business record management, improve usability, and remember user preferences.",
+    "privacy.useTitle": "3. How We Use It",
+    "privacy.useText": "The information is used within the website to display, create, update, search, and manage business-related data. It is also used to keep the interface usable and consistent for the user.",
+    "privacy.cookieTitle": "4. Cookie Choices",
+    "privacy.cookieText": "BizTrack uses necessary cookies or local storage to remember the user's cookie choice and language preference. Non-essential cookies are only enabled after the user gives consent.",
+    "privacy.thirdPartyTitle": "5. Third Parties",
+    "privacy.thirdPartyText": "If the website uses third-party services such as charts, fonts, external libraries, or analytics tools, those services may process limited technical data according to their own privacy policies.",
+    "privacy.contactTitle": "6. Contact",
+    "privacy.contactText": "For privacy-related questions, please contact the project team through the contact information provided on this website."
   },
 
   zh: {
@@ -109,6 +130,7 @@ const translations = {
     "nav.expenses": "支出",
     "nav.help": "帮助",
     "nav.developer": "联系我们",
+    "nav.backHome": "返回首页",
 
     "page.dashboard.title": "仪表盘 - BizTrack",
     "page.products.title": "产品 - BizTrack",
@@ -199,7 +221,27 @@ const translations = {
     "expenses.amountShort": "金额",
     "expenses.notesShort": "备注",
     "expenses.totalExpenses": "总支出",
-    "expenses.notesPlaceholder": "请输入备注"
+    "expenses.notesPlaceholder": "请输入备注",
+
+    "cookie.message": "我们使用必要 Cookie 来保证网站正常运行。经你同意后，我们也可能使用非必要 Cookie 来改善用户体验。",
+    "cookie.privacyLink": "隐私政策",
+    "cookie.necessaryOnly": "仅必要 Cookie",
+    "cookie.reject": "拒绝",
+    "cookie.acceptAll": "全部接受",
+
+    "privacy.title": "隐私和 Cookie 政策",
+    "privacy.collectTitle": "1. 我们收集什么",
+    "privacy.collectText": "BizTrack 可能会收集产品、订单和财务管理所需的基本信息，包括产品描述、订单详情、财务记录、语言偏好和 Cookie 选择。",
+    "privacy.whyTitle": "2. 我们为什么收集这些信息",
+    "privacy.whyText": "这些信息用于提供网站主要功能、支持业务记录管理、改善可用性，并记住用户偏好。",
+    "privacy.useTitle": "3. 我们如何使用这些信息",
+    "privacy.useText": "这些信息会在网站内部用于显示、创建、更新、搜索和管理业务相关数据，也用于保持界面对用户稳定和一致。",
+    "privacy.cookieTitle": "4. Cookie 选择",
+    "privacy.cookieText": "BizTrack 使用必要 Cookie 或本地存储来记住用户的 Cookie 选择和语言偏好。非必要 Cookie 只会在用户同意后启用。",
+    "privacy.thirdPartyTitle": "5. 第三方服务",
+    "privacy.thirdPartyText": "如果网站使用图表、字体、外部库或分析工具等第三方服务，这些服务可能会根据其自身隐私政策处理有限的技术数据。",
+    "privacy.contactTitle": "6. 联系方式",
+    "privacy.contactText": "如有隐私相关问题，请通过本网站提供的联系方式联系项目团队。"
   }
 };
 
