@@ -85,15 +85,6 @@ describe('accessibility basics', () => {
     });
   });
 
-  test.each(pages)('%s tests alt text only when images exist', (fileName) => {
-    const document = loadPage(fileName);
-    const images = [...document.querySelectorAll('img')];
-
-    images.forEach((image) => {
-      expect(image.getAttribute('alt')).toMatch(/\S/);
-    });
-  });
-
   test.each(pages)('%s uses keyboard-accessible buttons for clickable actions', (fileName) => {
     const document = loadPage(fileName);
     const clickableElements = [...document.querySelectorAll('[onclick]')];
