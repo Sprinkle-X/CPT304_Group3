@@ -406,3 +406,15 @@ function initializeChart() {
   );
   donutChart.render();
 };
+
+if (typeof module !== "undefined") {
+  module.exports = {
+    openSidebar,
+    closeSidebar,
+    calculateExpTotal,
+    calculateRevTotal,
+    createAmountSpan,
+    calculateCategorySales,
+    initializeChart,
+  };
+}
