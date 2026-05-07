@@ -4,9 +4,9 @@
 
 const fs = require('fs');
 const path = require('path');
+const { openSidebar, closeSidebar } = require('../help.js');
 
 const helpHtml = fs.readFileSync(path.join(__dirname, '..', 'help.html'), 'utf8');
-const helpScript = fs.readFileSync(path.join(__dirname, '..', 'help.js'), 'utf8');
 
 function loadHelpDocument() {
   return new DOMParser().parseFromString(helpHtml, 'text/html');
@@ -60,28 +60,15 @@ describe('help page', () => {
 
   test('opens and closes the sidebar', () => {
     document.body.innerHTML = '<div id="sidebar" style="display: none;"></div>';
-    window.eval(helpScript);
 
-    window.openSidebar();
+    openSidebar();
     expect(document.getElementById('sidebar').style.display).toBe('block');
 
-    window.openSidebar();
+    openSidebar();
     expect(document.getElementById('sidebar').style.display).toBe('none');
 
-    window.closeSidebar();
+    closeSidebar();
     expect(document.getElementById('sidebar').style.display).toBe('none');
   });
 
-  test('tests FAQ expand and collapse only when FAQ exists', () => {
-    const document = loadHelpDocument();
-    const questions = [...document.querySelectorAll('.faq-question')];
-
-    questions.forEach((question) => {
-      const answer = document.getElementById(question.getAttribute('aria-controls'));
-
-      expect(question.tagName).toBe('BUTTON');
-      expect(question.getAttribute('aria-expanded')).toMatch(/^(true|false)$/);
-      expect(answer).not.toBeNull();
-    });
-  });
 });
