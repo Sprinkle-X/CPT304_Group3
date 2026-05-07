@@ -405,3 +405,27 @@ function generateCSV(data) {
 
     return `${headers}\n${rows.join('\n')}`;
 }
+
+if (typeof module !== "undefined") {
+  module.exports = {
+    tr,
+    applyI18nNow,
+    showFeedback,
+    openSidebar,
+    closeSidebar,
+    openForm,
+    closeForm,
+    addOrUpdate,
+    newTransaction,
+    renderTransactions,
+    displayExpenses,
+    editRow,
+    deleteTransaction,
+    updateTransaction,
+    sortTable,
+    updateSortState,
+    performSearch,
+    exportToCSV,
+    generateCSV,
+  };
+}
