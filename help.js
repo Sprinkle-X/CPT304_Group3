@@ -9,6 +9,7 @@ function closeSidebar() {
     document.getElementById('sidebar').style.display = 'none';
 }
 
+/* istanbul ignore next */
 if (typeof module !== 'undefined') {
     module.exports = { openSidebar, closeSidebar };
 }
