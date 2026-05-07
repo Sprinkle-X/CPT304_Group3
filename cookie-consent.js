@@ -95,3 +95,17 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 });
+
+if (typeof module !== "undefined") {
+  module.exports = {
+    COOKIE_CONSENT_KEY,
+    setCookie,
+    getCookie,
+    saveCookieChoice,
+    getCookieChoice,
+    showCookieBanner,
+    hideCookieBanner,
+    enableNonEssentialCookies,
+    applyCookieChoice,
+  };
+}
