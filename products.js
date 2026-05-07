@@ -381,3 +381,26 @@ function generateCSV(data) {
 }
 
 init();
+
+if (typeof module !== "undefined") {
+  module.exports = {
+    showFeedback,
+    openSidebar,
+    closeSidebar,
+    openForm,
+    closeForm,
+    init,
+    addOrUpdate,
+    newProduct,
+    renderProducts,
+    editRow,
+    deleteProduct,
+    updateProduct,
+    isDuplicateID,
+    sortTable,
+    updateSortState,
+    performSearch,
+    exportToCSV,
+    generateCSV,
+  };
+}
