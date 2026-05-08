@@ -85,6 +85,41 @@ describe('accessibility basics', () => {
     });
   });
 
+  test.each(pages)('%s has one level-one heading', (fileName) => {
+    const document = loadPage(fileName);
+    const headings = [...document.querySelectorAll('h1')];
+
+    expect(headings).toHaveLength(1);
+    expect(accessibleName(headings[0])).not.toBe('');
+  });
+
+  test.each(pages)('%s does not skip heading levels', (fileName) => {
+    const document = loadPage(fileName);
+    const headings = [...document.querySelectorAll('h1, h2, h3, h4, h5, h6')];
+
+    headings.reduce((previousLevel, heading) => {
+      const currentLevel = Number(heading.tagName.slice(1));
+
+      expect(currentLevel - previousLevel).toBeLessThanOrEqual(1);
+      return currentLevel;
+    }, 0);
+  });
+
+  test.each(pages)('%s contains page content in landmarks', (fileName) => {
+    const document = loadPage(fileName);
+    const contentElements = [...document.body.children].filter(
+      (element) => !['SCRIPT', 'STYLE', 'TEMPLATE'].includes(element.tagName),
+    );
+
+    expect(document.querySelector('main')).not.toBeNull();
+    expect(document.querySelector('nav[aria-label="Primary navigation"]')).not.toBeNull();
+    expect(document.querySelector('nav[aria-label="Language selection"]')).not.toBeNull();
+    expect(document.querySelector('#cookie-banner[aria-label="Cookie consent"]')).not.toBeNull();
+    contentElements.forEach((element) => {
+      expect(['MAIN', 'NAV', 'ASIDE', 'HEADER', 'FOOTER'].includes(element.tagName)).toBe(true);
+    });
+  });
+
   test.each(pages)('%s uses keyboard-accessible buttons for clickable actions', (fileName) => {
     const document = loadPage(fileName);
     const clickableElements = [...document.querySelectorAll('[onclick]')];
@@ -106,5 +141,24 @@ describe('accessibility basics', () => {
         expect(header.getAttribute('scope')).toBe('col');
       });
     });
+  });
+
+  test.each(pages)('%s makes scrollable table regions keyboard accessible', (fileName) => {
+    const document = loadPage(fileName);
+    const tableContainers = [...document.querySelectorAll('.table-container')];
+
+    tableContainers.forEach((container) => {
+      expect(container.getAttribute('tabindex')).toBe('0');
+      expect(accessibleName(container)).not.toBe('');
+    });
+  });
+
+  test.each(pages)('%s makes the scrollable sidebar keyboard accessible', (fileName) => {
+    const document = loadPage(fileName);
+    const sidebar = document.querySelector('#sidebar');
+
+    expect(sidebar).not.toBeNull();
+    expect(sidebar.getAttribute('tabindex')).toBe('0');
+    expect(accessibleName(sidebar)).not.toBe('');
   });
 });

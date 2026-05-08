@@ -14,12 +14,12 @@
 </head>
 
 <body>
-  <div class="language-switcher">
+  <nav class="language-switcher" aria-label="Language selection">
     <button type="button" data-lang="en">EN</button>
     <button type="button" data-lang="zh">中文</button>
-  </div>
+  </nav>
 
-  <div id="sidebar" class="sidebar">
+  <nav id="sidebar" class="sidebar" aria-label="Primary navigation" tabindex="0">
     <div class="logo">
       <a href="./index.html">
         <i class="fas fa-b"></i>
@@ -45,16 +45,16 @@
         </a>
       </li>
     </ul>
-  </div>
+  </nav>
 
-  <div class="main-content">
+  <main class="main-content">
     <div class="header-wrapper">
       <button type="button" class="menu-icon icon-button" aria-label="Open sidebar" onclick="openSidebar()">
         <i class="fa-solid fa-bars" aria-hidden="true"></i>
       </button>
 
       <div class="header-title">
-        <h2 data-i18n="privacy.title">Privacy and Cookie Policy</h2>
+        <h1 data-i18n="privacy.title">Privacy and Cookie Policy</h1>
       </div>
 
       <div class="user-info"></div>
@@ -63,52 +63,53 @@
     <div class="about-container">
       <section class="privacy-policy-section">
         <article>
-          <h3 data-i18n="privacy.collectTitle">1. What We Collect</h3>
+          <h2 data-i18n="privacy.collectTitle">1. What We Collect</h2>
           <p data-i18n="privacy.collectText">
             BizTrack may collect basic information needed for product, order, and finance management. This may include product descriptions, order details, finance records, language preferences, and cookie choices.
           </p>
         </article>
 
         <article>
-          <h3 data-i18n="privacy.whyTitle">2. Why We Collect It</h3>
+          <h2 data-i18n="privacy.whyTitle">2. Why We Collect It</h2>
           <p data-i18n="privacy.whyText">
             This information is collected to provide the main functions of the website, support business record management, improve usability, and remember user preferences.
           </p>
         </article>
 
         <article>
-          <h3 data-i18n="privacy.useTitle">3. How We Use It</h3>
+          <h2 data-i18n="privacy.useTitle">3. How We Use It</h2>
           <p data-i18n="privacy.useText">
             The information is used within the website to display, create, update, search, and manage business-related data. It is also used to keep the interface usable and consistent for the user.
           </p>
         </article>
 
         <article>
-          <h3 data-i18n="privacy.cookieTitle">4. Cookie Choices</h3>
+          <h2 data-i18n="privacy.cookieTitle">4. Cookie Choices</h2>
           <p data-i18n="privacy.cookieText">
             BizTrack uses necessary cookies or local storage to remember the user's cookie choice and language preference. Non-essential cookies are only enabled after the user gives consent.
           </p>
         </article>
 
         <article>
-          <h3 data-i18n="privacy.thirdPartyTitle">5. Third Parties</h3>
+          <h2 data-i18n="privacy.thirdPartyTitle">5. Third Parties</h2>
           <p data-i18n="privacy.thirdPartyText">
             If the website uses third-party services such as charts, fonts, external libraries, or analytics tools, those services may process limited technical data according to their own privacy policies.
           </p>
         </article>
 
         <article>
-          <h3 data-i18n="privacy.contactTitle">6. Contact</h3>
+          <h2 data-i18n="privacy.contactTitle">6. Contact</h2>
           <p data-i18n="privacy.contactText">
             For privacy-related questions, please contact the project team through the contact information provided on this website.
           </p>
         </article>
       </section>
     </div>
-  </div>
+  </main>
 
   <!-- Cookie Banner -->
-  <div id="cookie-banner" class="cookie-banner" role="dialog" aria-label="Cookie consent" hidden>
+  <aside id="cookie-banner" class="cookie-banner" aria-label="Cookie consent" hidden>
+    <div role="dialog" aria-label="Cookie consent">
     <div class="cookie-content">
       <p class="cookie-message">
         <span data-i18n="cookie.message">
@@ -119,7 +120,8 @@
         </a>
       </p>
     </div>
-  </div>
+    </div>
+  </aside>
 
   <script src="./i18n.js"></script>
   <script src="./help.js"></script>
