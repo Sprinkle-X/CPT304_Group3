@@ -13,11 +13,11 @@
     <title data-i18n="page.orders.title">Orders - BizTrack</title>
 </head>
 <body>
-    <div class="language-switcher">
+    <nav class="language-switcher" aria-label="Language selection">
         <button type="button" data-lang="en">EN</button>
         <button type="button" data-lang="zh">中文</button>
-    </div>
-    <div id="sidebar" class="sidebar">
+    </nav>
+    <nav id="sidebar" class="sidebar" aria-label="Primary navigation" tabindex="0">
         <div class="logo">
             <a href="./index.html">
                 <i class="fas fa-b"></i>
@@ -65,16 +65,16 @@
                 </a>
             </li>
         </ul>
-    </div>
+    </nav>
 
-    <div class="main-content">
+    <main class="main-content">
         <div class="header-wrapper">
             <button type="button" class="menu-icon icon-button" aria-label="Open sidebar" data-i18n-aria-label="common.openSidebar" onclick="openSidebar()">
                 <i class="fa-solid fa-bars" aria-hidden="true"></i>
             </button>
             <div class="header-title">
                 <!-- <span>Primary</span> -->
-                <h2 data-i18n="nav.orders">Orders</h2>
+                <h1 data-i18n="nav.orders">Orders</h1>
             </div>
             <div class="user-info">
                 <div class="search-box">
@@ -90,7 +90,7 @@
 
         <div class="table-wrapper">
             <div class="product-title">
-                <h3 class="main-title" data-i18n="nav.orders">Orders</h3>
+                <h2 class="main-title" data-i18n="nav.orders">Orders</h2>
                 <div class="order-button">
                     <button class="add-button" onclick="openForm()" data-i18n="orders.addOrder">Add Order</button>
                     <button class="download-button" onclick="exportToCSV()" data-i18n="common.exportCSV">Export to CSV</button>
@@ -176,7 +176,7 @@
                 </form>
             </div>
 
-            <div class="table-container">
+            <div class="table-container" tabindex="0" aria-label="Scrollable orders table">
                 <table id="order-table">
                     <thead>
                         <tr>
@@ -258,9 +258,10 @@
                 </table>
             </div>
         </div>
-    </div>
+    </main>
     <!-- Cookie Banner -->
-    <div id="cookie-banner" class="cookie-banner" role="dialog" aria-label="Cookie consent" hidden>
+    <aside id="cookie-banner" class="cookie-banner" aria-label="Cookie consent" hidden>
+    <div role="dialog" aria-label="Cookie consent">
     <div class="cookie-content">
         <p data-i18n="cookie.message">
         We use necessary cookies to make this website work. With your consent, we may also use non-essential cookies to improve the user experience.
@@ -283,6 +284,7 @@
         </div>
     </div>
     </div>
+    </aside>
 
     <script src="./i18n.js"></script>
     <script src="./orders.js"></script>

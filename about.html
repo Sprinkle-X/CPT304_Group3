@@ -13,11 +13,11 @@
     <title>About - Biztrack</title>
 </head>
 <body>
-    <div class="language-switcher">
+    <nav class="language-switcher" aria-label="Language selection">
         <button type="button" data-lang="en">EN</button>
         <button type="button" data-lang="zh">中文</button>
-    </div>
-    <div id="sidebar" class="sidebar">
+    </nav>
+    <nav id="sidebar" class="sidebar" aria-label="Primary navigation" tabindex="0">
         <div class="logo">
             <a href="./index.html">
                 <i class="fas fa-b"></i>
@@ -65,15 +65,15 @@
                 </a>
             </li>
         </ul>
-    </div>
+    </nav>
 
-    <div class="main-content">
+    <main class="main-content">
         <div class="header-wrapper">
             <button type="button" class="menu-icon icon-button" aria-label="Open sidebar" onclick="openSidebar()">
                 <i class="fa-solid fa-bars" aria-hidden="true"></i>
             </button>
             <div class="header-title">
-                <h2>My Coding Journey</h2>
+                <h1>My Coding Journey</h1>
             </div>
             <div class="user-info">
             </div>
@@ -82,8 +82,8 @@
         <div class="about-container">
             <section id="using-biztrack">
                 <article>
-                    <h3 class="main-title">Hey, I'm Sumayyah!
-                    </h3>
+                    <h2 class="main-title">Hey, I'm Sumayyah!
+                    </h2>
                     <p>Welcome to my little corner of the internet, where I'm rolling up my sleeves and diving into the coding world. I’m not your typical tech guru – I’m just a small business owner navigating the hustle and bustle of entrepreneurship. Oh, and did I mention I’m also part of the <a href="https://www.getcoding.ca/coaching-program-nl" target="_blank">GetCoding NL</a> program? Yeah, it's been quite the journey, and I owe a huge shoutout to my coding coach, Sam.</p> 
                 </article>
                 <article>
@@ -119,9 +119,10 @@
                 </article>
             </section>
         </div>
-    </div>
+    </main>
     <!-- Cookie Banner -->
-    <div id="cookie-banner" class="cookie-banner" role="dialog" aria-label="Cookie consent" hidden>
+    <aside id="cookie-banner" class="cookie-banner" aria-label="Cookie consent" hidden>
+    <div role="dialog" aria-label="Cookie consent">
     <div class="cookie-content">
         <p data-i18n="cookie.message">
         We use necessary cookies to make this website work. With your consent, we may also use non-essential cookies to improve the user experience.
@@ -144,6 +145,7 @@
         </div>
     </div>
     </div>
+    </aside>
 
     <script src="./i18n.js"></script>
     <script src="./help.js"></script>

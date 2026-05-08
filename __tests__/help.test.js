@@ -20,7 +20,7 @@ describe('help page', () => {
     );
 
     expect(document.title).toBe('Help - BizTrack');
-    expect(document.querySelector('h2').textContent).toBe('Using BizTrack: A Quick Guide');
+    expect(document.querySelector('h1').textContent).toBe('Using BizTrack: A Quick Guide');
     expect(headings).toEqual([
       'What is BizTrack?',
       'Navigating the Dashboard',

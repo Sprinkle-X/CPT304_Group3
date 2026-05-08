@@ -13,11 +13,11 @@
     <title>Help - BizTrack</title>
 </head>
 <body>
-    <div class="language-switcher">
+    <nav class="language-switcher" aria-label="Language selection">
         <button type="button" data-lang="en">EN</button>
         <button type="button" data-lang="zh">中文</button>
-    </div>
-    <div id="sidebar" class="sidebar">
+    </nav>
+    <nav id="sidebar" class="sidebar" aria-label="Primary navigation" tabindex="0">
         <div class="logo">
             <a href="./index.html">
                 <i class="fas fa-b"></i>
@@ -65,15 +65,15 @@
                 </a>
             </li>
         </ul>
-    </div>
+    </nav>
 
-    <div class="main-content">
+    <main class="main-content">
         <div class="header-wrapper">
             <button type="button" class="menu-icon icon-button" aria-label="Open sidebar" onclick="openSidebar()">
                 <i class="fa-solid fa-bars" aria-hidden="true"></i>
             </button>
             <div class="header-title">
-                <h2>Using BizTrack: A Quick Guide</h2>
+                <h1>Using BizTrack: A Quick Guide</h1>
             </div>
             <div class="user-info">
             </div>
@@ -82,29 +82,29 @@
         <div class="guide-container">
             <section id="using-biztrack">
                 <article>
-                    <h3 class="main-title">What is BizTrack?</h3>
+                    <h2 class="main-title">What is BizTrack?</h2>
                     <p>BizTrack is your go-to business management tool designed with small business owners in mind. It's an all-in-one platform that helps you effortlessly manage your products, track orders, and stay on top of your finances. Let me walk you through the basics:</p>
                 </article>
                 <article>
-                    <h3 class="main-title">Navigating the Dashboard</h3>
+                    <h2 class="main-title">Navigating the Dashboard</h2>
                     <p>The Dashboard is your central hub, giving you a snapshot of your business's overall performance. Here, you'll find key metrics like total expenses, revenues, profits and the number of orders. It's your command center for a quick overview.</p>
                 </article>
                 <article>
-                    <h3 class="main-title">Expenses Page</h3>
+                    <h2 class="main-title">Expenses Page</h2>
                     <ol>
                         <li><b>Record Your Expenses: </b>Head to the Expenses page to add your business expenses. Fill in the date, choose a category, enter the amount, and jot down any notes. It's that simple.</li>
                         <li><b>Edit or Delete Expenses: </b>Edit or Delete Expenses: Made a mistake? No worries! You can easily edit or delete expense records right from the Expenses page.</li>
                     </ol>
                 </article>
                 <article>
-                    <h3 class="main-title">Orders Page</h3>
+                    <h2 class="main-title">Orders Page</h2>
                     <ol>
                         <li><b>Track Your Orders: </b>On the Orders page, you can keep tabs on all your orders. Each entry details the product, quantity, and order status.</li>
                         <li><b>Effortless Editing: </b>Need to update an order status? Click the "Edit" button and make your changes. It's hassle-free.</li>
                     </ol>
                 </article>
                 <article>
-                    <h3 class="main-title">Adding a New Expense, Order or Product</h3>
+                    <h2 class="main-title">Adding a New Expense, Order or Product</h2>
                     <ol>
                         <li>Click on "Add Expense" or the equivalent button on the order or product page.</li>
                         <li>Fill in the product details or order details or transaction date, category, amount, and any notes.</li>
@@ -112,14 +112,14 @@
                     </ol>
                 </article>
                 <article>
-                    <h3 class="main-title">Sorting and Searching Entries/Tables</h3>
+                    <h2 class="main-title">Sorting and Searching Entries/Tables</h2>
                     <ol>
                         <li>Click on any column heading (headers) to sort the entries in the table by that column in either ascending order or alphabetical order.</li>
                         <li>You can also search for a particular product, order or expense by entrering the value in the search box at the top of the respective page.</li>
                     </ol>
                 </article>
                 <article>
-                    <h3 class="main-title">Export to CSV</h3>
+                    <h2 class="main-title">Export to CSV</h2>
                     <p>Want to keep a backup or analyze your data elsewhere? Simply click on "Export to CSV" to download a CSV file with all your business data.</p>
                     <p>BizTrack is designed to be intuitive, user-friendly, and adaptable to your business needs. Explore the different pages, try out the features, and let BizTrack simplify your small business management.</p>
                 </article>
@@ -145,9 +145,10 @@
                 </ul>
             </section>
         </div>
-    </div>
+    </main>
     <!-- Cookie Banner -->
-    <div id="cookie-banner" class="cookie-banner" role="dialog" aria-label="Cookie consent" hidden>
+    <aside id="cookie-banner" class="cookie-banner" aria-label="Cookie consent" hidden>
+    <div role="dialog" aria-label="Cookie consent">
     <div class="cookie-content">
         <p data-i18n="cookie.message">
         We use necessary cookies to make this website work. With your consent, we may also use non-essential cookies to improve the user experience.
@@ -170,6 +171,7 @@
         </div>
     </div>
     </div>
+    </aside>
     
     <script src="./i18n.js"></script>
     <script src="./help.js"></script>
