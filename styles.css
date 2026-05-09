@@ -244,10 +244,10 @@ body {
 .finance-button button {
     font-size: medium;
     font-weight: 600;
-    background: #a37a74;
+    background: #7a5651;
     cursor: pointer;
     transition: all 0.5s;
-    color: var(--light-orange);
+    color: #ffffff;
     padding: 12px 13px;
     border-radius: 5px;
 }
@@ -335,7 +335,7 @@ label {
     font-size: 15px;
 }
 .form-container .cancel {
-    background-color: #6e483a;
+    background-color: #49332b;
 }
 .form-container .btn:hover, .open-button:hover {
     opacity: 1;
