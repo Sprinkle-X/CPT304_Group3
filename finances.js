@@ -72,7 +72,15 @@ function openForm() {
 }
 
 function closeForm() {
-    document.getElementById("transaction-form").style.display = "none";
+    const form = document.getElementById("transaction-form");
+    form.style.display = "none";
+
+    // === 新增：重置按钮和表单 ===
+    const submitBtn = document.getElementById("submitBtn");
+    submitBtn.dataset.mode = "add";
+    submitBtn.textContent = tr("common.add", "Add");
+
+    form.reset();
 }
 
 

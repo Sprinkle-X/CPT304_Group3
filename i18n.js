@@ -73,6 +73,7 @@ const translations = {
     "common.calculated": "(Calculated)",
     "common.add": "Add",
     "common.cancel": "Cancel",
+    "common.update": "Update",
     "common.action": "Action",
     "common.search": "Search",
     "common.openSidebar": "Open sidebar",
