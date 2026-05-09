@@ -22,7 +22,9 @@ const translations = {
     "dashboard.expenses": "Expenses",
     "dashboard.balance": "Balance",
     "dashboard.orders": "Orders",
-
+    "dashboard.totalSales": "Total Sales",
+    "dashboard.totalSalesAxis": "Total Sales ($)",
+    
     "products.searchProducts": "Search products",
     "products.addProduct": "Add Product",
     "products.productId": "Product ID",
@@ -37,6 +39,7 @@ const translations = {
     "products.price": "Price",
     "products.chooseProduct": "Choose a product",
     "products.chooseCategory": "Choose a category",
+    "products.duplicateId": "Product ID already exists. Please use a unique ID.",
 
     "orders.searchOrders": "Search orders",
     "orders.addOrder": "Add Order",
@@ -69,6 +72,7 @@ const translations = {
     "status.shipped": "Shipped",
     "status.delivered": "Delivered",
 
+    "common.update": "Update",
     "common.exportCSV": "Export to CSV",
     "common.calculated": "(Calculated)",
     "common.add": "Add",
@@ -85,6 +89,8 @@ const translations = {
     "common.confirmDelete": "Are you sure you want to delete?",
     "common.editOrder": "Edit order",
     "common.deleteOrder": "Delete order",
+    "common.editProduct": "Edit product",
+    "common.deleteProduct": "Delete product",
 
     "expenses.searchExpenses": "Search expenses",
     "expenses.addExpense": "Add Expense",
@@ -100,6 +106,12 @@ const translations = {
     "expenses.notesShort": "Notes",
     "expenses.totalExpenses": "Total Expenses",
     "expenses.notesPlaceholder": "Enter notes",
+
+    "expenseCategory.rent": "Rent",
+    "expenseCategory.utilities": "Utilities",
+    "expenseCategory.supplies": "Supplies",
+    "expenseCategory.orderFulfillment": "Order Fulfillment",
+    "expenseCategory.miscellaneous": "Miscellaneous",
 
     "cookie.message": "We use necessary cookies to make this website work. With your consent, we may also use non-essential cookies to improve the user experience.",
     "cookie.privacyLink": "Privacy Policy",
@@ -119,7 +131,30 @@ const translations = {
     "privacy.thirdPartyTitle": "5. Third Parties",
     "privacy.thirdPartyText": "If the website uses third-party services such as charts, fonts, external libraries, or analytics tools, those services may process limited technical data according to their own privacy policies.",
     "privacy.contactTitle": "6. Contact",
-    "privacy.contactText": "For privacy-related questions, please contact the project team through the contact information provided on this website."
+    "privacy.contactText": "For privacy-related questions, please contact the project team through the contact information provided on this website.",
+  
+    "category.hats": "Hats",
+    "category.drinkware": "Drinkware",
+    "category.clothing": "Clothing",
+    "category.accessories": "Accessories",
+    "category.homeDecor": "Home decor",
+
+    "product.baseballCaps": "Baseball caps",
+    "product.snapbacks": "Snapbacks",
+    "product.beanies": "Beanies",
+    "product.bucketHats": "Bucket hats",
+    "product.mugs": "Mugs",
+    "product.waterBottles": "Water bottles",
+    "product.tumblers": "Tumblers",
+    "product.tshirts": "T-shirts",
+    "product.sweatshirts": "Sweatshirts",
+    "product.hoodies": "Hoodies",
+    "product.pillowCases": "Pillow cases",
+    "product.toteBags": "Tote bags",
+    "product.stickers": "Stickers",
+    "product.posters": "Posters",
+    "product.framedPosters": "Framed posters",
+    "product.canvasPrints": "Canvas prints"
   },
 
   zh: {
@@ -145,6 +180,8 @@ const translations = {
     "dashboard.expenses": "支出",
     "dashboard.balance": "余额",
     "dashboard.orders": "订单",
+    "dashboard.totalSales": "总销售额",
+    "dashboard.totalSalesAxis": "总销售额（$）",
 
     "products.searchProducts": "搜索产品",
     "products.addProduct": "添加产品",
@@ -161,6 +198,7 @@ const translations = {
     "products.chooseProduct": "选择产品",
     "products.chooseCategory": "选择类别",
     "products.productDescPlaceholder": "请输入产品描述",
+    "products.duplicateId": "产品编号已存在，请使用唯一编号。",
 
     "common.action": "操作",
     "common.add": "添加",
@@ -178,6 +216,8 @@ const translations = {
     "common.confirmDelete": "确定要删除吗？",
     "common.editOrder": "编辑订单",
     "common.deleteOrder": "删除订单",
+    "common.editProduct": "编辑产品",
+    "common.deleteProduct": "删除产品",
 
     "orders.searchOrders": "搜索订单",
     "orders.addOrder": "添加订单",
@@ -224,6 +264,12 @@ const translations = {
     "expenses.totalExpenses": "总支出",
     "expenses.notesPlaceholder": "请输入备注",
 
+    "expenseCategory.rent": "租金",
+    "expenseCategory.utilities": "水电杂费",
+    "expenseCategory.supplies": "用品",
+    "expenseCategory.orderFulfillment": "订单履约",
+    "expenseCategory.miscellaneous": "杂项",
+
     "cookie.message": "我们使用必要 Cookie 来保证网站正常运行。经你同意后，我们也可能使用非必要 Cookie 来改善用户体验。",
     "cookie.privacyLink": "隐私政策",
     "cookie.necessaryOnly": "仅必要 Cookie",
@@ -242,7 +288,30 @@ const translations = {
     "privacy.thirdPartyTitle": "5. 第三方服务",
     "privacy.thirdPartyText": "如果网站使用图表、字体、外部库或分析工具等第三方服务，这些服务可能会根据其自身隐私政策处理有限的技术数据。",
     "privacy.contactTitle": "6. 联系方式",
-    "privacy.contactText": "如有隐私相关问题，请通过本网站提供的联系方式联系项目团队。"
+    "privacy.contactText": "如有隐私相关问题，请通过本网站提供的联系方式联系项目团队。",
+
+    "category.hats": "帽子",
+    "category.drinkware": "水杯饮具",
+    "category.clothing": "服装",
+    "category.accessories": "配件",
+    "category.homeDecor": "家居装饰",
+
+    "product.baseballCaps": "棒球帽",
+    "product.snapbacks": "平檐帽",
+    "product.beanies": "针织帽",
+    "product.bucketHats": "渔夫帽",
+    "product.mugs": "马克杯",
+    "product.waterBottles": "水瓶",
+    "product.tumblers": "随行杯",
+    "product.tshirts": "T恤",
+    "product.sweatshirts": "卫衣",
+    "product.hoodies": "连帽衫",
+    "product.pillowCases": "枕套",
+    "product.toteBags": "托特包",
+    "product.stickers": "贴纸",
+    "product.posters": "海报",
+    "product.framedPosters": "装框海报",
+    "product.canvasPrints": "帆布画"
   }
 };
 
@@ -282,11 +351,22 @@ function applyTranslations() {
     const key = element.getAttribute("data-i18n-title");
     element.setAttribute("title", t(key));
   });
+
+  document.querySelectorAll("[data-i18n-label]").forEach((element) => {
+    const key = element.getAttribute("data-i18n-label");
+    element.setAttribute("label", t(key));
+  });
 }
 
 function changeLanguage(lang) {
   localStorage.setItem("language", lang);
   applyTranslations();
+
+  document.dispatchEvent(
+    new CustomEvent("languageChanged", {
+      detail: { lang }
+    })
+  );
 }
 
 document.addEventListener("DOMContentLoaded", () => {
