@@ -15,18 +15,51 @@ function setupProductsDOM() {
     <form class="form-container" id="product-form">
       <input type="text" id="product-id" placeholder="PD001" required>
       <select name="product-name" id="product-name" required>
-        <option value="" disabled selected hidden>Choose a product</option>
-        <option value="Baseball caps">Baseball caps</option>
-        <option value="Water bottles">Water bottles</option>
+        <option value="" disabled selected hidden data-i18n="products.chooseProduct">
+          Choose a product
+        </option>
+
+        <optgroup label="Hats" data-i18n-label="category.hats">
+          <option value="Baseball caps" data-category="Hats" data-i18n="product.baseballCaps">Baseball caps</option>
+          <option value="Snapbacks" data-category="Hats" data-i18n="product.snapbacks">Snapbacks</option>
+          <option value="Beanies" data-category="Hats" data-i18n="product.beanies">Beanies</option>
+          <option value="Bucket hats" data-category="Hats" data-i18n="product.bucketHats">Bucket hats</option>
+        </optgroup>
+
+        <optgroup label="Drinkware" data-i18n-label="category.drinkware">
+          <option value="Mugs" data-category="Drinkware" data-i18n="product.mugs">Mugs</option>
+          <option value="Water bottles" data-category="Drinkware" data-i18n="product.waterBottles">Water bottles</option>
+          <option value="Tumblers" data-category="Drinkware" data-i18n="product.tumblers">Tumblers</option>
+        </optgroup>
+
+        <optgroup label="Clothing" data-i18n-label="category.clothing">
+          <option value="T-shirts" data-category="Clothing" data-i18n="product.tshirts">T-shirts</option>
+          <option value="Sweatshirts" data-category="Clothing" data-i18n="product.sweatshirts">Sweatshirts</option>
+          <option value="Hoodies" data-category="Clothing" data-i18n="product.hoodies">Hoodies</option>
+        </optgroup>
+
+        <optgroup label="Accessories" data-i18n-label="category.accessories">
+          <option value="Pillow cases" data-category="Accessories" data-i18n="product.pillowCases">Pillow cases</option>
+          <option value="Tote bags" data-category="Accessories" data-i18n="product.toteBags">Tote bags</option>
+          <option value="Stickers" data-category="Accessories" data-i18n="product.stickers">Stickers</option>
+        </optgroup>
+
+        <optgroup label="Home decor" data-i18n-label="category.homeDecor">
+          <option value="Posters" data-category="Home decor" data-i18n="product.posters">Posters</option>
+          <option value="Framed posters" data-category="Home decor" data-i18n="product.framedPosters">Framed posters</option>
+          <option value="Canvas prints" data-category="Home decor" data-i18n="product.canvasPrints">Canvas prints</option>
+        </optgroup>
       </select>
       <input type="text" id="product-desc" placeholder="Enter product description" required>
       <select name="product-cat" id="product-cat" required>
-        <option value="" disabled selected>Choose a category</option>
-        <option value="Clothing">Clothing</option>
-        <option value="Drinkware">Drinkware</option>
-        <option value="Accessories">Accessories</option>
-        <option value="Hats">Hats</option>
-        <option value="Home decor">Home decor</option>
+        <option value="" disabled selected data-i18n="products.chooseCategory">
+          Choose a category
+        </option>
+        <option value="Clothing" data-i18n="category.clothing">Clothing</option>
+        <option value="Drinkware" data-i18n="category.drinkware">Drinkware</option>
+        <option value="Accessories" data-i18n="category.accessories">Accessories</option>
+        <option value="Hats" data-i18n="category.hats">Hats</option>
+        <option value="Home decor" data-i18n="category.homeDecor">Home decor</option>
       </select>
       <input type="number" id="product-price" placeholder="$0.00" min="0.00" max="10000.00" step="0.01" required>
       <input type="number" id="product-sold" placeholder="1" required>
@@ -77,15 +110,44 @@ function loadModule() {
   return require("../products.js");
 }
 
+function setupI18nMock(lang = "en") {
+  const translations = {
+    en: {
+      "category.hats": "Hats",
+      "category.drinkware": "Drinkware",
+      "category.clothing": "Clothing",
+      "category.accessories": "Accessories",
+      "category.homeDecor": "Home decor",
+
+      "product.baseballCaps": "Baseball caps",
+      "product.waterBottles": "Water bottles",
+      "product.sweatshirts": "Sweatshirts",
+    },
+    zh: {
+      "category.hats": "帽子",
+      "category.drinkware": "水杯饮具",
+      "category.clothing": "服装",
+      "category.accessories": "配件",
+      "category.homeDecor": "家居装饰",
+
+      "product.baseballCaps": "棒球帽",
+      "product.waterBottles": "水瓶",
+      "product.sweatshirts": "卫衣",
+    },
+  };
+
+  window.i18n = {
+    t: jest.fn((key) => translations[lang][key] || key),
+    applyTranslations: jest.fn(),
+  };
+}
+
 describe("products page – init and data loading", () => {
   beforeEach(() => {
     setupProductsDOM();
     localStorage.clear();
 
-    window.i18n = {
-      t: jest.fn((key) => key),
-      applyTranslations: jest.fn(),
-    };
+    delete window.i18n;
   });
 
   afterEach(() => {
@@ -133,10 +195,7 @@ describe("products page – CRUD operations", () => {
     setupProductsDOM();
     localStorage.clear();
 
-    window.i18n = {
-      t: jest.fn((key) => key),
-      applyTranslations: jest.fn(),
-    };
+    delete window.i18n;
   });
 
   afterEach(() => {
@@ -351,10 +410,7 @@ describe("products page – search and sort", () => {
     setupProductsDOM();
     localStorage.clear();
 
-    window.i18n = {
-      t: jest.fn((key) => key),
-      applyTranslations: jest.fn(),
-    };
+    delete window.i18n;
   });
 
   afterEach(() => {
@@ -579,10 +635,7 @@ describe("products page – CSV export", () => {
     setupProductsDOM();
     localStorage.clear();
 
-    window.i18n = {
-      t: jest.fn((key) => key),
-      applyTranslations: jest.fn(),
-    };
+    delete window.i18n;
   });
 
   afterEach(() => {
@@ -606,6 +659,31 @@ describe("products page – CSV export", () => {
     expect(csv).toBe("prodID,prodName,prodDesc,prodCategory,prodPrice,QtySold\nPD001,Cap,Nice cap,Hats,25.00,20");
   });
 
+  test("generateCSV returns an empty string when data is empty", () => {
+    const products = loadModule();
+
+    expect(products.generateCSV([])).toBe("");
+  });
+
+  test("generateCSV escapes commas, quotes, and new lines", () => {
+    const products = loadModule();
+
+    const csv = products.generateCSV([
+      {
+        prodID: "PD001",
+        prodName: 'Cap, "Limited"',
+        prodDesc: "Line one\nLine two",
+        prodCategory: "Hats",
+        prodPrice: "25.00",
+        QtySold: 20,
+      },
+    ]);
+
+    expect(csv).toBe(
+      'prodID,prodName,prodDesc,prodCategory,prodPrice,QtySold\nPD001,"Cap, ""Limited""","Line one\nLine two",Hats,25.00,20'
+    );
+  });
+
   test("exportToCSV creates a download link and triggers click", () => {
     const products = loadModule();
 
@@ -626,10 +704,7 @@ describe("products page – form open/close", () => {
     setupProductsDOM();
     localStorage.clear();
 
-    window.i18n = {
-      t: jest.fn((key) => key),
-      applyTranslations: jest.fn(),
-    };
+    delete window.i18n;
   });
 
   afterEach(() => {
@@ -664,10 +739,7 @@ describe("products page – sidebar", () => {
     setupProductsDOM();
     localStorage.clear();
 
-    window.i18n = {
-      t: jest.fn((key) => key),
-      applyTranslations: jest.fn(),
-    };
+    delete window.i18n;
   });
 
   afterEach(() => {
@@ -702,10 +774,7 @@ describe("products page – feedback messages", () => {
     setupProductsDOM();
     localStorage.clear();
 
-    window.i18n = {
-      t: jest.fn((key) => key),
-      applyTranslations: jest.fn(),
-    };
+    delete window.i18n;
   });
 
   afterEach(() => {
@@ -761,20 +830,19 @@ describe("products page – addOrUpdate dispatch", () => {
     setupProductsDOM();
     localStorage.clear();
 
-    window.i18n = {
-      t: jest.fn((key) => key),
-      applyTranslations: jest.fn(),
-    };
+    delete window.i18n;
   });
 
   afterEach(() => {
     jest.clearAllMocks();
   });
 
-  test("addOrUpdate calls newProduct when submit button says 'Add'", () => {
+  test("addOrUpdate calls newProduct when submit button mode is add", () => {
     const products = loadModule();
 
-    document.getElementById("submitBtn").textContent = "Add";
+    const submitBtn = document.getElementById("submitBtn");
+    submitBtn.dataset.mode = "add";
+
     document.getElementById("product-id").value = "PD-DISP";
     document.getElementById("product-name").value = "T-shirts";
     document.getElementById("product-desc").value = "Dispatch add";
@@ -785,14 +853,14 @@ describe("products page – addOrUpdate dispatch", () => {
     products.addOrUpdate({ preventDefault: jest.fn() });
 
     expect(document.body.textContent).toContain("Dispatch add");
+
     const stored = JSON.parse(localStorage.getItem("bizTrackProducts"));
     expect(stored.find((p) => p.prodID === "PD-DISP")).toBeDefined();
   });
 
-  test("addOrUpdate calls updateProduct when submit button says 'Update'", () => {
+  test("addOrUpdate calls updateProduct when submit button mode is update", () => {
     const products = loadModule();
 
-    // First, add a product to update
     document.getElementById("product-id").value = "PD-UPD";
     document.getElementById("product-name").value = "T-shirts";
     document.getElementById("product-desc").value = "Before update";
@@ -801,15 +869,21 @@ describe("products page – addOrUpdate dispatch", () => {
     document.getElementById("product-sold").value = "1";
     products.newProduct({ preventDefault: jest.fn() });
 
-    // Now switch to update mode
-    document.getElementById("submitBtn").textContent = "Update";
+    const submitBtn = document.getElementById("submitBtn");
+    submitBtn.dataset.mode = "update";
+
     document.getElementById("product-id").value = "PD-UPD";
+    document.getElementById("product-name").value = "T-shirts";
     document.getElementById("product-desc").value = "After update";
+    document.getElementById("product-cat").value = "Clothing";
+    document.getElementById("product-price").value = "10";
+    document.getElementById("product-sold").value = "1";
 
     products.addOrUpdate({ preventDefault: jest.fn() });
 
     const stored = JSON.parse(localStorage.getItem("bizTrackProducts"));
     const updated = stored.find((p) => p.prodID === "PD-UPD");
+
     expect(updated.prodDesc).toBe("After update");
   });
 });
@@ -819,10 +893,7 @@ describe("products page – table rendering details", () => {
     setupProductsDOM();
     localStorage.clear();
 
-    window.i18n = {
-      t: jest.fn((key) => key),
-      applyTranslations: jest.fn(),
-    };
+    delete window.i18n;
   });
 
   afterEach(() => {
@@ -921,5 +992,93 @@ describe("products page – table rendering details", () => {
     const rows = document.querySelectorAll(".product-row");
     expect(rows).toHaveLength(1);
     expect(rows[0].dataset.prodID).toBe("PD-S");
+  });
+});
+
+describe("products page – category auto fill and i18n labels", () => {
+  beforeEach(() => {
+    setupProductsDOM();
+    localStorage.clear();
+    setupI18nMock("en");
+  });
+
+  afterEach(() => {
+    jest.clearAllMocks();
+  });
+
+  test("fills category automatically when a product name is selected", () => {
+    const products = loadModule();
+
+    const productNameSelect = document.getElementById("product-name");
+    const productCatSelect = document.getElementById("product-cat");
+
+    productNameSelect.value = "Water bottles";
+    productNameSelect.dispatchEvent(new Event("change", { bubbles: true }));
+
+    expect(productCatSelect.value).toBe("Drinkware");
+
+    productNameSelect.value = "Baseball caps";
+    productNameSelect.dispatchEvent(new Event("change", { bubbles: true }));
+
+    expect(productCatSelect.value).toBe("Hats");
+  });
+
+  test("category auto fill still uses English value when page language is Chinese", () => {
+    setupI18nMock("zh");
+
+    const products = loadModule();
+
+    const productNameSelect = document.getElementById("product-name");
+    const productCatSelect = document.getElementById("product-cat");
+
+    productNameSelect.value = "Water bottles";
+    productNameSelect.dispatchEvent(new Event("change", { bubbles: true }));
+
+    expect(productCatSelect.value).toBe("Drinkware");
+  });
+
+  test("renders product name and category labels in English", () => {
+    const products = loadModule();
+
+    products.renderProducts([
+      {
+        prodID: "PD-LABEL",
+        prodName: "Water bottles",
+        prodDesc: "Bottle",
+        prodCat: "Drinkware",
+        prodPrice: 12,
+        prodSold: 4,
+      },
+    ]);
+
+    expect(document.body.textContent).toContain("Water bottles");
+    expect(document.body.textContent).toContain("Drinkware");
+  });
+
+  test("renders product name and category labels in Chinese", () => {
+    setupI18nMock("zh");
+
+    const products = loadModule();
+
+    products.renderProducts([
+      {
+        prodID: "PD-LABEL",
+        prodName: "Water bottles",
+        prodDesc: "Bottle",
+        prodCat: "Drinkware",
+        prodPrice: 12,
+        prodSold: 4,
+      },
+    ]);
+
+    expect(document.body.textContent).toContain("水瓶");
+    expect(document.body.textContent).toContain("水杯饮具");
+  });
+
+  test("returns original value when product or category has no translation mapping", () => {
+    const products = loadModule();
+
+    expect(products.getProductNameLabel("Custom item")).toBe("Custom item");
+    expect(products.getCategoryLabel("Custom category")).toBe("Custom category");
   });
 });

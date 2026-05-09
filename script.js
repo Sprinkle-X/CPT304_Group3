@@ -1,3 +1,41 @@
+let barChartInstance = null;
+let donutChartInstance = null;
+
+function chartT(key, fallback) {
+  if (window.i18n && typeof window.i18n.t === "function") {
+    const translated = window.i18n.t(key);
+    return translated === key ? fallback : translated;
+  }
+
+  return fallback;
+}
+
+const productCategoryI18nKeys = {
+  "Hats": "category.hats",
+  "Drinkware": "category.drinkware",
+  "Clothing": "category.clothing",
+  "Accessories": "category.accessories",
+  "Home decor": "category.homeDecor"
+};
+
+const expenseCategoryI18nKeys = {
+  "Rent": "expenseCategory.rent",
+  "Utilities": "expenseCategory.utilities",
+  "Supplies": "expenseCategory.supplies",
+  "Order Fulfillment": "expenseCategory.orderFulfillment",
+  "Miscellaneous": "expenseCategory.miscellaneous"
+};
+
+function getProductCategoryDisplayName(category) {
+  const key = productCategoryI18nKeys[category];
+  return key ? chartT(key, category) : category;
+}
+
+function getExpenseCategoryDisplayName(category) {
+  const key = expenseCategoryI18nKeys[category];
+  return key ? chartT(key, category) : category;
+}
+
 // SIDEBAR TOGGLE
 
 function openSidebar() {
@@ -238,9 +276,9 @@ function initializeChart() {
 
   const barChartOptions = {
       series: [{
-          name: "Total Sales",
-          data: Object.values(sortedCategorySales),
-      }],
+        name: chartT("dashboard.totalSales", "Total Sales"),
+        data: Object.values(sortedCategorySales),
+    }],
       chart: {
         type: 'bar',
         height: 350,
@@ -268,14 +306,14 @@ function initializeChart() {
         opacity: 0.7,
       },
       xaxis: {
-        categories: Object.keys(sortedCategorySales),
+        categories: Object.keys(sortedCategorySales).map(getProductCategoryDisplayName),
         axisTicks: {
           show: false,
         },
       },
       yaxis: {
         title: {
-          text: 'Total Sales ($)',
+          text: chartT("dashboard.totalSalesAxis", "Total Sales ($)"),
         },
         axisTicks: {
           show: false,
@@ -290,10 +328,14 @@ function initializeChart() {
       }
     };
     
-  const barChart = new ApexCharts(
+  if (barChartInstance) {
+    barChartInstance.destroy();
+  }
+
+  barChartInstance = new ApexCharts(
     document.querySelector('#bar-chart'), barChartOptions
   );
-  barChart.render();
+  barChartInstance.render();
 
 
   // DONUT CHART
@@ -355,7 +397,7 @@ function initializeChart() {
 
   const donutChartOptions = {
     series: Object.values(categoryExpData),
-    labels: Object.keys(categoryExpData),
+    labels: Object.keys(categoryExpData).map(getExpenseCategoryDisplayName),
     chart: {
       // height: 350,
       type: 'donut',
@@ -400,11 +442,15 @@ function initializeChart() {
     },
   };
   
-  const donutChart = new ApexCharts(
+  if (donutChartInstance) {
+    donutChartInstance.destroy();
+  }
+
+  donutChartInstance = new ApexCharts(
     document.querySelector('#donut-chart'),
     donutChartOptions
   );
-  donutChart.render();
+  donutChartInstance.render();
 };
 
 if (typeof module !== "undefined") {
@@ -418,3 +464,7 @@ if (typeof module !== "undefined") {
     initializeChart,
   };
 }
+
+document.addEventListener("languageChanged", () => {
+  initializeChart();
+});

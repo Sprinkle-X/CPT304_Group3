@@ -106,31 +106,35 @@
                             <label for="product-name"><b data-i18n="products.productName">Product Name</b></label>
                             <select name="product-name" id="product-name" required>
                                 <option value="" disabled selected hidden data-i18n="products.chooseProduct">Choose a product</option>
-                                <optgroup label="Hats">
-                                    <option value="Baseball caps">Baseball caps</option>
-                                    <option value="Snapbacks">Snapbacks</option>
-                                    <option value="Beanies">Beanies</option>
-                                    <option value="Bucket hats">Bucket hats</option>
+                                <optgroup label="Hats" data-i18n-label="category.hats">
+                                    <option value="Baseball caps" data-category="Hats" data-i18n="product.baseballCaps">Baseball caps</option>
+                                    <option value="Snapbacks" data-category="Hats" data-i18n="product.snapbacks">Snapbacks</option>
+                                    <option value="Beanies" data-category="Hats" data-i18n="product.beanies">Beanies</option>
+                                    <option value="Bucket hats" data-category="Hats" data-i18n="product.bucketHats">Bucket hats</option>
                                 </optgroup>
-                                <optgroup label="Drinkware">
-                                    <option value="Mugs">Mugs</option>
-                                    <option value="Water bottles">Water bottles</option>
-                                    <option value="Tumblers">Tumblers</option>
-                                </optgroup>   
-                                <optgroup label="Clothing">
-                                    <option value="T-shirts">T-shirts</option>
-                                    <option value="Sweatshirts">Sweatshirts</option>
-                                    <option value="Hoodies">Hoodies</option>
-                                </optgroup>   
-                                <optgroup label="Accessories">
-                                    <option value="Pillow cases">Pillow cases</option>
-                                    <option value="Tote bags">Tote bags</option>
-                                    <option value="Stickers">Stickers</option>
-                                </optgroup>   
-                                <optgroup label="Home decor">
-                                    <option value="Posters">Posters</option>
-                                    <option value="Framed posters">Framed posters</option>
-                                    <option value="Canvas prints">Canvas prints</option>
+
+                                <optgroup label="Drinkware" data-i18n-label="category.drinkware">
+                                    <option value="Mugs" data-category="Drinkware" data-i18n="product.mugs">Mugs</option>
+                                    <option value="Water bottles" data-category="Drinkware" data-i18n="product.waterBottles">Water bottles</option>
+                                    <option value="Tumblers" data-category="Drinkware" data-i18n="product.tumblers">Tumblers</option>
+                                </optgroup>
+
+                                <optgroup label="Clothing" data-i18n-label="category.clothing">
+                                    <option value="T-shirts" data-category="Clothing" data-i18n="product.tshirts">T-shirts</option>
+                                    <option value="Sweatshirts" data-category="Clothing" data-i18n="product.sweatshirts">Sweatshirts</option>
+                                    <option value="Hoodies" data-category="Clothing" data-i18n="product.hoodies">Hoodies</option>
+                                </optgroup>
+
+                                <optgroup label="Accessories" data-i18n-label="category.accessories">
+                                    <option value="Pillow cases" data-category="Accessories" data-i18n="product.pillowCases">Pillow cases</option>
+                                    <option value="Tote bags" data-category="Accessories" data-i18n="product.toteBags">Tote bags</option>
+                                    <option value="Stickers" data-category="Accessories" data-i18n="product.stickers">Stickers</option>
+                                </optgroup>
+
+                                <optgroup label="Home decor" data-i18n-label="category.homeDecor">
+                                    <option value="Posters" data-category="Home decor" data-i18n="product.posters">Posters</option>
+                                    <option value="Framed posters" data-category="Home decor" data-i18n="product.framedPosters">Framed posters</option>
+                                    <option value="Canvas prints" data-category="Home decor" data-i18n="product.canvasPrints">Canvas prints</option>
                                 </optgroup>
                             </select>
     
@@ -142,11 +146,11 @@
                             <label for="product-cat"><b data-i18n="products.productCategory">Product Category:</b></label>
                             <select name="product-cat" id="product-cat" required>
                                 <option value="" disabled selected data-i18n="products.chooseCategory">Choose a category</option>
-                                <option value="Clothing">Clothing</option>
-                                <option value="Drinkware">Drinkware</option>
-                                <option value="Accessories">Accessories</option>
-                                <option value="Hats">Hats</option>
-                                <option value="Home decor">Home decor</option>
+                                <option value="Clothing" data-i18n="category.clothing">Clothing</option>
+                                <option value="Drinkware" data-i18n="category.drinkware">Drinkware</option>
+                                <option value="Accessories" data-i18n="category.accessories">Accessories</option>
+                                <option value="Hats" data-i18n="category.hats">Hats</option>
+                                <option value="Home decor" data-i18n="category.homeDecor">Home decor</option>
                             </select>
     
                             <label for="product-price"><b data-i18n="products.productPrice">Product Price:</b></label>

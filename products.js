@@ -1,3 +1,15 @@
+function tr(key, fallback) {
+  return window.i18n && typeof window.i18n.t === "function"
+    ? window.i18n.t(key)
+    : fallback;
+}
+
+function applyI18nNow() {
+  if (window.i18n && typeof window.i18n.applyTranslations === "function") {
+    window.i18n.applyTranslations();
+  }
+}
+
 // user feedback logic
 function showFeedback(message, type = 'success') {
     const existingFeedback = document.querySelector('.feedback-message');
@@ -61,15 +73,24 @@ function openForm() {
 }
 
 function closeForm() {
-    const form = document.getElementById("product-form");
-    form.style.display = "none";
-
-    // === 新增：重置按钮和表单 ===
-    const submitBtn = document.getElementById("submitBtn");
-    submitBtn.textContent = "Add";
-    form.reset();
+    document.getElementById("product-form").style.display = "none";
 }
 
+function fillCategoryFromProductName() {
+  const productNameSelect = document.getElementById("product-name");
+  const productCatSelect = document.getElementById("product-cat");
+
+  if (!productNameSelect || !productCatSelect) {
+    return;
+  }
+
+  const selectedOption = productNameSelect.options[productNameSelect.selectedIndex];
+  const category = selectedOption?.dataset.category;
+
+  if (category) {
+    productCatSelect.value = category;
+  }
+}
 
 let products = [];
 
@@ -125,16 +146,20 @@ function init() {
     }
 
     renderProducts(products);
+    setupProductCategoryAutoFill();
 }
 
 function addOrUpdate(event) {
   event.preventDefault();
-  let type = document.getElementById("submitBtn").textContent;
-  if (type === 'Add') {
-      newProduct(event);
-  } else if (type === 'Update'){
-      const prodID = document.getElementById("product-id").value;
-      updateProduct(prodID);
+
+  const submitBtn = document.getElementById("submitBtn");
+  const mode = submitBtn.dataset.mode || "add";
+
+  if (mode === "add") {
+    newProduct(event);
+  } else if (mode === "update") {
+    const prodID = document.getElementById("product-id").value;
+    updateProduct(prodID);
   }
 }
 
@@ -148,7 +173,7 @@ function newProduct(event) {
   const prodSold = parseInt(document.getElementById("product-sold").value);
 
   if (isDuplicateID(prodID, null)) {
-    alert("Product ID already exists. Please use a unique ID.");
+    alert(tr("products.duplicateId", "Product ID already exists. Please use a unique ID."));
     return;
   }
 
@@ -168,7 +193,7 @@ function newProduct(event) {
 
   document.getElementById("product-form").reset();
   closeForm();
-  showFeedback('Added successfully!', 'success');
+  showFeedback(tr("common.addedSuccessfully", "Added successfully!"), "success");
 }
 
 
@@ -191,9 +216,9 @@ function renderProducts(products) {
 
       const textFields = [
         product.prodID,
-        product.prodName,
+        getProductNameLabel(product.prodName),
         product.prodDesc,
-        product.prodCat,
+       getCategoryLabel(product.prodCat),
         `$${product.prodPrice.toFixed(2)}`,
         product.prodSold
       ];
@@ -209,7 +234,7 @@ function renderProducts(products) {
       const editButton = document.createElement("button");
       editButton.type = "button";
       editButton.className = "action-button edit-button";
-      editButton.setAttribute("aria-label", `Edit product ${product.prodID}`);
+      editButton.setAttribute("aria-label", `${tr("common.editProduct", "Edit product")} ${product.prodID}`);
       editButton.addEventListener("click", function() { editRow(product.prodID); });
 
       const editIcon = document.createElement("i");
@@ -221,7 +246,7 @@ function renderProducts(products) {
       const deleteButton = document.createElement("button");
       deleteButton.type = "button";
       deleteButton.className = "action-button delete-button";
-      deleteButton.setAttribute("aria-label", `Delete product ${product.prodID}`);
+      deleteButton.setAttribute("aria-label", `${tr("common.deleteProduct", "Delete product")} ${product.prodID}`);
       deleteButton.addEventListener("click", function() { deleteProduct(product.prodID); });
 
       const deleteIcon = document.createElement("i");
@@ -233,6 +258,8 @@ function renderProducts(products) {
       prodRow.appendChild(actionTd);
       prodTableBody.appendChild(prodRow);
   });
+
+  applyI18nNow();
 }
 
 function editRow(prodID) {
@@ -245,15 +272,18 @@ function editRow(prodID) {
   document.getElementById("product-price").value = productToEdit.prodPrice;
   document.getElementById("product-sold").value = productToEdit.prodSold;
 
-  document.getElementById("submitBtn").textContent = "Update";
-  
+  const submitBtn = document.getElementById("submitBtn");
+  submitBtn.dataset.mode = "update";
+  submitBtn.setAttribute("data-i18n", "common.update");
+  submitBtn.textContent = tr("common.update", "Update");
+
   document.getElementById("product-form").style.display = "block";
 }
 
 function deleteProduct(prodID) {
-  if (!confirm('Are you sure you want to delete?')) {
+  if (!confirm(tr("common.confirmDelete", "Are you sure you want to delete?"))) {
     return;
-}
+  }
   const indexToDelete = products.findIndex(product => product.prodID === prodID);
 
   if (indexToDelete !== -1) {
@@ -262,7 +292,7 @@ function deleteProduct(prodID) {
       localStorage.setItem("bizTrackProducts", JSON.stringify(products));
 
       renderProducts(products);
-      showFeedback('Deleted successfully!', 'success');
+      showFeedback(tr("common.deletedSuccessfully", "Deleted successfully!"), "success");
   }
 }
 
@@ -280,7 +310,7 @@ function updateProduct(prodID) {
         };
 
         if (isDuplicateID(updatedProduct.prodID, prodID)) {
-            alert("Product ID already exists. Please use a unique ID.");
+            alert(tr("products.duplicateId", "Product ID already exists. Please use a unique ID."));
             return;
         }
 
@@ -291,9 +321,14 @@ function updateProduct(prodID) {
         renderProducts(products);
 
         document.getElementById("product-form").reset();
-        document.getElementById("submitBtn").textContent = "Add";
+
+        const submitBtn = document.getElementById("submitBtn");
+        submitBtn.dataset.mode = "add";
+        submitBtn.setAttribute("data-i18n", "common.add");
+        submitBtn.textContent = tr("common.add", "Add");
+
         closeForm();
-        showFeedback('Updated successfully!', 'success');
+        showFeedback(tr("common.updatedSuccessfully", "Updated successfully!"), "success");
     }
 }
 
@@ -379,12 +414,86 @@ function exportToCSV() {
   document.body.removeChild(link);
 }
 
-function generateCSV(data) {
-  const headers = Object.keys(data[0]).join(',');
-  const rows = data.map(order => Object.values(order).join(','));
+function escapeCSVValue(value) {
+  const stringValue = String(value);
 
-  return `${headers}\n${rows.join('\n')}`;
+  if (stringValue.includes(",") || stringValue.includes('"') || stringValue.includes("\n")) {
+    return `"${stringValue.replace(/"/g, '""')}"`;
+  }
+
+  return stringValue;
 }
+
+function generateCSV(data) {
+  if (!data.length) {
+    return "";
+  }
+
+  const headers = Object.keys(data[0]).join(",");
+  const rows = data.map(row =>
+    Object.values(row).map(escapeCSVValue).join(",")
+  );
+
+  return `${headers}\n${rows.join("\n")}`;
+}
+
+function setupProductCategoryAutoFill() {
+  const productNameSelect = document.getElementById("product-name");
+
+  if (!productNameSelect) {
+    return;
+  }
+
+  if (productNameSelect.dataset.categoryAutofillBound === "true") {
+    return;
+  }
+
+  productNameSelect.dataset.categoryAutofillBound = "true";
+  productNameSelect.addEventListener("change", fillCategoryFromProductName);
+}
+
+function getCategoryLabel(category) {
+  const categoryMap = {
+    "Hats": "category.hats",
+    "Drinkware": "category.drinkware",
+    "Clothing": "category.clothing",
+    "Accessories": "category.accessories",
+    "Home decor": "category.homeDecor",
+  };
+
+  const key = categoryMap[category];
+
+  return key ? tr(key, category) : category;
+}
+
+function getProductNameLabel(productName) {
+  const productMap = {
+    "Baseball caps": "product.baseballCaps",
+    "Snapbacks": "product.snapbacks",
+    "Beanies": "product.beanies",
+    "Bucket hats": "product.bucketHats",
+    "Mugs": "product.mugs",
+    "Water bottles": "product.waterBottles",
+    "Tumblers": "product.tumblers",
+    "T-shirts": "product.tshirts",
+    "Sweatshirts": "product.sweatshirts",
+    "Hoodies": "product.hoodies",
+    "Pillow cases": "product.pillowCases",
+    "Tote bags": "product.toteBags",
+    "Stickers": "product.stickers",
+    "Posters": "product.posters",
+    "Framed posters": "product.framedPosters",
+    "Canvas prints": "product.canvasPrints",
+  };
+
+  const key = productMap[productName];
+
+  return key ? tr(key, productName) : productName;
+}
+
+document.addEventListener("languageChanged", () => {
+  renderProducts(products);
+});
 
 init();
 
@@ -408,5 +517,9 @@ if (typeof module !== "undefined") {
     performSearch,
     exportToCSV,
     generateCSV,
+    fillCategoryFromProductName,
+    setupProductCategoryAutoFill,
+    getCategoryLabel,
+    getProductNameLabel,
   };
 }

@@ -1,3 +1,22 @@
+const expenseCategoryI18nKeys = {
+    "Rent": "expenseCategory.rent",
+    "Utilities": "expenseCategory.utilities",
+    "Supplies": "expenseCategory.supplies",
+    "Order Fulfillment": "expenseCategory.orderFulfillment",
+    "Miscellaneous": "expenseCategory.miscellaneous"
+};
+
+function getExpenseCategoryDisplayName(category) {
+    const key = expenseCategoryI18nKeys[category];
+
+    if (window.i18n && key) {
+        const translated = window.i18n.t(key);
+        return translated === key ? category : translated;
+    }
+
+    return category;
+}
+
 function tr(key, fallback) {
     return window.i18n && typeof window.i18n.t === "function"
         ? window.i18n.t(key)
@@ -75,7 +94,7 @@ function closeForm() {
     const form = document.getElementById("transaction-form");
     form.style.display = "none";
 
-    // === 新增：重置按钮和表单 ===
+    // reset button to add mode
     const submitBtn = document.getElementById("submitBtn");
     submitBtn.dataset.mode = "add";
     submitBtn.textContent = tr("common.add", "Add");
@@ -86,6 +105,14 @@ function closeForm() {
 
 let transactions = [];
 let serialNumberCounter;
+
+function getNextTransactionId() {
+    if (transactions.length === 0) {
+        return 1;
+    }
+
+    return Math.max(...transactions.map(transaction => Number(transaction.trID) || 0)) + 1;
+}
 
 window.onload = function () {
     const storedTransactions = localStorage.getItem("bizTrackTransactions");
@@ -160,8 +187,7 @@ function newTransaction(event) {
     const trAmount = parseFloat(document.getElementById("tr-amount").value);
     const trNotes = document.getElementById("tr-notes").value;
 
-    serialNumberCounter = transactions.length + 1;
-    let trID = serialNumberCounter;
+    const trID = getNextTransactionId();
 
     const transaction = {
       trID,
@@ -176,7 +202,6 @@ function newTransaction(event) {
     renderTransactions(transactions);
     localStorage.setItem("bizTrackTransactions", JSON.stringify(transactions));
 
-    serialNumberCounter++;
     displayExpenses();
 
     document.getElementById("transaction-form").reset();
@@ -191,7 +216,7 @@ function renderTransactions(transactions) {
 
     const transactionToRender = transactions;
 
-    transactionToRender.forEach(transaction => {
+    transactionToRender.forEach((transaction, index) => {
         const transactionRow = document.createElement("tr");
         transactionRow.className = "transaction-row";
 
@@ -203,16 +228,18 @@ function renderTransactions(transactions) {
 
         const formattedAmount = typeof transaction.trAmount === 'number' ? `$${transaction.trAmount.toFixed(2)}` : '';
 
-        const textFields = [
-          transaction.trID,
-          transaction.trDate,
-          transaction.trCategory
-        ];
-        textFields.forEach(text => {
-          const td = document.createElement("td");
-          td.textContent = text;
-          transactionRow.appendChild(td);
-        });
+        const idTd = document.createElement("td");
+        idTd.textContent = index + 1;
+        transactionRow.appendChild(idTd);
+
+        const dateTd = document.createElement("td");
+        dateTd.textContent = transaction.trDate;
+        transactionRow.appendChild(dateTd);
+
+        const categoryTd = document.createElement("td");
+        categoryTd.dataset.expenseCategory = transaction.trCategory;
+        categoryTd.textContent = getExpenseCategoryDisplayName(transaction.trCategory);
+        transactionRow.appendChild(categoryTd);
 
         const amountTd = document.createElement("td");
         amountTd.className = "tr-amount";
@@ -435,5 +462,10 @@ if (typeof module !== "undefined") {
     performSearch,
     exportToCSV,
     generateCSV,
+    getExpenseCategoryDisplayName,
   };
 }
+
+document.addEventListener("languageChanged", () => {
+    renderTransactions(transactions);
+});

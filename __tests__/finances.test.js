@@ -63,18 +63,26 @@ describe("finances page script", () => {
 
     window.i18n = {
       t: jest.fn((key) => {
-        const values = {
+        const map = {
           "common.addedSuccessfully": "Added successfully!",
           "common.deletedSuccessfully": "Deleted successfully!",
           "common.updatedSuccessfully": "Updated successfully!",
-          "common.confirmDelete": "Are you sure you want to delete?",
-          "common.add": "Add",
           "common.update": "Update",
+          "common.add": "Add",
+          "common.confirmDelete": "Are you sure?",
           "common.editExpense": "Edit expense",
           "common.deleteExpense": "Delete expense",
+
+          "expenses.totalExpenses": "Total Expenses",
+
+          "expenseCategory.rent": "Rent",
+          "expenseCategory.utilities": "Utilities",
+          "expenseCategory.supplies": "Supplies",
+          "expenseCategory.orderFulfillment": "Order Fulfillment",
+          "expenseCategory.miscellaneous": "Miscellaneous",
         };
 
-        return values[key] || key;
+        return map[key] !== undefined ? map[key] : key;
       }),
       applyTranslations: jest.fn(),
     };

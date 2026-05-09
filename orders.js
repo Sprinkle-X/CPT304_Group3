@@ -1,3 +1,35 @@
+const productI18nKeys = {
+    "Baseball caps": "product.baseballCaps",
+    "Snapbacks": "product.snapbacks",
+    "Beanies": "product.beanies",
+    "Bucket hats": "product.bucketHats",
+
+    "Mugs": "product.mugs",
+    "Water bottles": "product.waterBottles",
+    "Tumblers": "product.tumblers",
+
+    "T-shirts": "product.tshirts",
+    "Sweatshirts": "product.sweatshirts",
+    "Hoodies": "product.hoodies",
+
+    "Pillow cases": "product.pillowCases",
+    "Tote bags": "product.toteBags",
+    "Stickers": "product.stickers",
+
+    "Posters": "product.posters",
+    "Framed posters": "product.framedPosters",
+    "Canvas prints": "product.canvasPrints"
+};
+
+function getProductDisplayName(productName) {
+    const key = productI18nKeys[productName];
+
+    if (window.i18n && key) {
+        return window.i18n.t(key);
+    }
+
+    return productName;
+}
 function tr(key, fallback) {
     return window.i18n && typeof window.i18n.t === "function"
         ? window.i18n.t(key)
@@ -249,25 +281,39 @@ function renderOrders(orders) {
         const formattedTaxes = typeof order.taxes === 'number' ? `$${order.taxes.toFixed(2)}` : '';
         const formattedTotal = typeof order.orderTotal === 'number' ? `$${order.orderTotal.toFixed(2)}` : '';
 
-        const textFields = [
-            order.orderID,
-            order.orderDate,
-            order.itemName,
-            formattedPrice,
-            order.qtyBought,
-            formattedShipping,
-            formattedTaxes
-        ];
-        textFields.forEach(text => {
-            const td = document.createElement("td");
-            td.textContent = text;
-            orderRow.appendChild(td);
-        });
+        const orderIdTd = document.createElement("td");
+        orderIdTd.textContent = order.orderID;
+        orderRow.appendChild(orderIdTd);
+
+        const orderDateTd = document.createElement("td");
+        orderDateTd.textContent = order.orderDate;
+        orderRow.appendChild(orderDateTd);
+
+        const itemNameTd = document.createElement("td");
+        itemNameTd.dataset.productName = order.itemName;
+        itemNameTd.textContent = getProductDisplayName(order.itemName);
+        orderRow.appendChild(itemNameTd);
+
+        const itemPriceTd = document.createElement("td");
+        itemPriceTd.textContent = formattedPrice;
+        orderRow.appendChild(itemPriceTd);
+
+        const qtyBoughtTd = document.createElement("td");
+        qtyBoughtTd.textContent = order.qtyBought;
+        orderRow.appendChild(qtyBoughtTd);
+
+        const shippingTd = document.createElement("td");
+        shippingTd.textContent = formattedShipping;
+        orderRow.appendChild(shippingTd);
+
+        const taxesTd = document.createElement("td");
+        taxesTd.textContent = formattedTaxes;
+        orderRow.appendChild(taxesTd);
 
         const totalTd = document.createElement("td");
         totalTd.className = "order-total";
         totalTd.textContent = formattedTotal;
-        orderRow.appendChild(totalTd);``
+        orderRow.appendChild(totalTd);
 
         const statusTd = document.createElement("td");
         const statusDiv = document.createElement("div");
@@ -523,5 +569,10 @@ if (typeof module !== "undefined") {
     performSearch,
     exportToCSV,
     generateCSV,
+    getProductDisplayName,
   };
 }
+
+document.addEventListener("languageChanged", () => {
+    renderOrders(orders);
+});
