@@ -73,7 +73,16 @@ function openForm() {
 }
 
 function closeForm() {
-    document.getElementById("order-form").style.display = "none";
+    const form = document.getElementById("order-form");
+    form.style.display = "none";
+
+    // === 新增：重置按钮和表单 ===
+    const submitBtn = document.getElementById("submitBtn");
+    submitBtn.dataset.mode = "add";
+    submitBtn.setAttribute("data-i18n", "common.add");
+    submitBtn.textContent = tr("common.add", "Add");
+
+    form.reset();
 }
 
 let orders = [];
@@ -492,4 +501,27 @@ function generateCSV(data) {
     const rows = data.map(order => Object.values(order).join(','));
 
     return `${headers}\n${rows.join('\n')}`;
+}
+
+if (typeof module !== "undefined") {
+  module.exports = {
+    showFeedback,
+    openSidebar,
+    closeSidebar,
+    openForm,
+    closeForm,
+    addOrUpdate,
+    newOrder,
+    renderOrders,
+    displayRevenue,
+    editRow,
+    deleteOrder,
+    updateOrder,
+    isDuplicateID,
+    sortTable,
+    updateSortState,
+    performSearch,
+    exportToCSV,
+    generateCSV,
+  };
 }

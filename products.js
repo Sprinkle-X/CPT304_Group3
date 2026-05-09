@@ -61,7 +61,13 @@ function openForm() {
 }
 
 function closeForm() {
-    document.getElementById("product-form").style.display = "none";
+    const form = document.getElementById("product-form");
+    form.style.display = "none";
+
+    // === 新增：重置按钮和表单 ===
+    const submitBtn = document.getElementById("submitBtn");
+    submitBtn.textContent = "Add";
+    form.reset();
 }
 
 
@@ -240,7 +246,7 @@ function editRow(prodID) {
   document.getElementById("product-sold").value = productToEdit.prodSold;
 
   document.getElementById("submitBtn").textContent = "Update";
-
+  
   document.getElementById("product-form").style.display = "block";
 }
 
